@@ -37,7 +37,7 @@ Generate epub from http://www.linovel.com/
         linovel.py http://www.linovel.com/main/book/1578.html -o d:/
     
 
-![lknovel截图](https://raw.github.com/bebound/linovel/master/screenShot/1.png)
+![lknovel截图](https://raw.github.com/bebound/linovel/master/screenShot/2.png)
 
 The previous repo is [lknovel](https://github.com/bebound/lknovel)
 
