@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<!DOCTYPE ncx PUBLIC "-//NISO//DTD ncx 2005-1//EN"
+"http://www.daisy.org/z3986/2005/ncx-2005-1.dtd">
+<ncx xmlns="http://www.daisy.org/z3986/2005/ncx/" version="2005-1">
+<head>
+<meta content="urn:uuid:{uuid}" name="dtb:uid"/>
+<meta content="0" name="dtb:depth"/>
+<meta content="0" name="dtb:totalPageCount"/>
+<meta content="0" name="dtb:maxPageNumber"/>
+</head>
+<docTitle>
+<text>{book_name}</text>
+</docTitle>
+<docAuthor>
+<text>{author}</text>
+</docAuthor>
+<navMap>
+<navPoint id="Cover" playOrder="1">
+<navLabel>
+<text>封面</text>
+</navLabel>
+<content src="Text/Cover.html"/>
+</navPoint>
+<navPoint id="Title" playOrder="2">
+<navLabel>
+<text>标题</text>
+</navLabel>
+<content src="Text/Title.html"/>
+</navPoint>
+<navPoint id="Contents" playOrder="3">
+<navLabel>
+<text>目录</text>
+</navLabel>
+<content src="Text/Contents.html"/>
+</navPoint>
+{nav}
+</navMap>
+</ncx>

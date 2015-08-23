@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<package xmlns="http://www.idpf.org/2007/opf" unique-identifier="BookId" version="2.0">
+<metadata xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:opf="http://www.idpf.org/2007/opf">
+<dc:identifier id="BookId" opf:scheme="UUID">urn:uuid:{uuid}</dc:identifier>
+<dc:title>{book_name}</dc:title>
+<dc:creator opf:file-as="{author}" opf:role="aut">{author}</dc:creator>
+<dc:language>zh</dc:language>
+<dc:source>http://www.lightnovel.cn</dc:source>
+<dc:description>由https://github.com/bebound/lknovel/生成</dc:description>
+<meta content="{cover_name}" name="cover" />
+</metadata>
+<manifest>
+<item href="toc.ncx" id="ncx" media-type="application/x-dtbncx+xml"/>
+{file_paths}
+</manifest>
+<spine toc="ncx">
+<itemref idref="Cover.html" />
+<itemref idref="Title.html" />
+<itemref idref="Contents.html" />
+
+{chapter_orders}
+</spine>
+<guide>
+<reference href="Text/Contents.html" title="Table Of Contents" type="toc" />
+<reference href="Text/Cover.html" title="Cover" type="cover"/>
+</guide>
+</package>

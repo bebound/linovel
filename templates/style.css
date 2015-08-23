@@ -1,0 +1,136 @@
+body {
+    padding: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 1%;
+    margin-right: 1%;
+    line-height: 130%;
+    text-align: justify;
+    color: #333;
+}
+
+h1 {
+    line-height: 130%;
+    text-align: center;
+    font-weight: bold;
+    font-size: xx-large;
+    margin-top: 0.2em;
+    margin-bottom: 0.3em;
+}
+
+h2 {
+    line-height: 130%;
+    text-align: center;
+    font-weight: bold;
+    font-size: x-large;
+    margin-top: 0.2em;
+    margin-bottom: 0.2em;
+    border-bottom: 1px solid #EEE;
+}
+
+h4 {
+    font-size: 1.5em;
+    text-align: center;
+    line-height: 1.2em;
+    text-indent: 0;
+    font-weight: bold;
+    margin-top: 1em;
+    margin-bottom: 1.5em;
+    border-bottom: 1px solid #EEE;
+}
+
+div {
+    margin: 0;
+    padding: 0;
+    text-align: justify;
+}
+
+a {
+    color: #4183C4;
+    text-decoration: none;
+}
+
+p {
+    text-indent: 2em;
+    display: block;
+    line-height: 1.3em;
+    margin-top: 0.4em;
+    margin-bottom: 0.4em;
+}
+
+ul.contents {
+    text-indent: 0;
+    font-size: 1.06em;
+    font-weight: bold;
+    margin-left: 0;
+    padding-left: 1em;
+}
+
+li.c-rules {
+    margin-left: 0;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    line-height: 1.1em;
+}
+
+.cont {
+    text-indent: 2em;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.cover {
+    margin: 0;
+    padding: 0;
+    text-indent: 0;
+    text-align: center;
+}
+
+.cover img {
+    border: 1px solid #CACACA;
+}
+
+.illust {
+    text-indent: 0;
+    text-align: center;
+}
+
+.line-index {
+    width: 50%;
+    text-align: left;
+    margin-left: 1em;
+}
+
+.entry {
+    padding: 3px;
+    background: none repeat scroll 0 0 #EEE;
+    border-radius: 3px;
+}
+
+.title {
+    font-size: 1.3em;
+    font-weight: bold;
+    text-align: center;
+    padding: 10px 10px;
+    color: #555;
+    display: block;
+    border: 1px solid #d8d8d8;
+    border-radius: 3px 3px 0 0;
+    border-bottom: 0 none;
+    background-color: #f5f5f5;
+}
+
+.entry-content {
+    background-color: #fff;
+    border: 1px solid #CACACA;
+    padding: 20px;
+}
+
+.entry-content.introduction {
+    text-align: center;
+}
+
+.titlep {
+    text-align: center;
+    text-indent: 0;
+}
