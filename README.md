@@ -18,6 +18,7 @@ Generate epub from http://www.linovel.com/
 
     Usage:
         linovel.py
+        linovel.py [-s] [-o | --output=<output_dir>] [-c | --cover=<cover_path>] <url>...
         linovel.py <url>... [-s] [-o | --output=<output_dir>] [-c | --cover=<cover_path>]
         linovel.py -h | --help
         linovel.py -v | --version
@@ -33,8 +34,8 @@ Generate epub from http://www.linovel.com/
         -v --version                               Show version
     
     Examples:
-        linovel.py http://www.linovel.com/main/vollist/492.html -s
-        linovel.py http://www.linovel.com/main/book/1578.html -o d:/
+        linovel.py -s http://www.linovel.com/n/vollist/492.html
+        linovel.py -o d:/ http://www.linovel.com/n/book/1578.html
     
 
 ![lknovel截图](https://raw.github.com/bebound/linovel/master/screenShot/2.png)
