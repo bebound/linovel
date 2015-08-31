@@ -4,7 +4,6 @@ import os
 import re
 import queue
 import shutil
-import sys
 import uuid
 import zipfile
 
@@ -16,7 +15,7 @@ _PROGRESS_LOCK = threading.Lock()
 _HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:19.0) Gecko/20100101 Firefox/19.0'}
 
 
-class Epub():
+class Epub:
     """
     deal with epub
 
@@ -82,7 +81,7 @@ class Epub():
         except UnicodeDecodeError as e:
             print('Ignored:', e)
 
-    def download_progress(self, url):
+    def download_progress(self):
         with _PROGRESS_LOCK:
             self.finished_picture_number += 1
             sharp_number = round(self.finished_picture_number / len(self.pictures) * 60)
@@ -107,7 +106,7 @@ class Epub():
                             f.write(temp_chunk)
                     else:
                         print(r.status_code)
-                self.download_progress(url)
+                self.download_progress()
             except Exception as e:
                 print(e)
                 _download_queue.put(url)
@@ -157,8 +156,9 @@ class Epub():
             chapter_name = chapter[1]
 
             for line in chapter[2]:
-                if line.startswith('/illustration/'):
-                    image_url = 'http://lknovel.lightnovel.cn' + line
+                if line.startswith('[img]'):
+                    url = re.search(r'\](.*)\[', line).group(1)
+                    image_url = 'http://www.linovel.com' + url
                     self.pictures.append(image_url)
                     image = '<div class="illust"><img alt="" src="../Images/' + image_url.split('/')[
                         -1] + '" /></div>\n<br/>'
@@ -193,6 +193,7 @@ class Epub():
         self.print_info('Start downloading pictures, total number:' + str(len(self.pictures)))
         for i in range(5):
             t = threading.Thread(target=self.download_picture)
+            t.daemon = True
             t.start()
             th.append(t)
         for t in th:
@@ -300,7 +301,7 @@ class Epub():
         self.create_html()
 
         self.zip_files()
-        self.print_info('\n已生成：' + self.book_name + '.epub\n\n')
+        self.print_info('\n已生成：' + self.book_name + '.epub\n')
 
         # delete temp file
         shutil.rmtree(self.base_path)
