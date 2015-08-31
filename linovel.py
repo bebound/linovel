@@ -3,6 +3,7 @@
 
 Usage:
     linovel.py
+    linovel.py [-s] [-o | --output=<output_dir>] [-c | --cover=<cover_path>] <url>...
     linovel.py <url>... [-s] [-o | --output=<output_dir>] [-c | --cover=<cover_path>]
     linovel.py -h | --help
     linovel.py -v | --version
@@ -18,8 +19,8 @@ Options:
     -v --version                               Show version
 
 Examples:
-    linovel.py http://www.linovel.com/main/vollist/492.html -s
-    linovel.py http://www.linovel.com/main/book/1578.html -o d:/
+    linovel.py http://www.linovel.com/n/vollist/492.html -s
+    linovel.py http://www.linovel.com/n/book/1578.html -o d:/
 """
 import re
 import sys
@@ -52,8 +53,8 @@ def check_url(url):
         return 'book' if the url represent a book
         return False if the url is neither vollist nor booklist
     """
-    vollist = re.compile(r'http://www.linovel.com/main/vollist/(\d+).html')
-    book = re.compile(r'http://www.linovel.com/main/book/(\d+).html')
+    vollist = re.compile(r'http://www.linovel.com/n/vollist/(\d+).html')
+    book = re.compile(r'http://www.linovel.com/n/book/(\d+).html')
     if vollist.search(url):
         return 'vollist'
     elif book.search(url):
@@ -108,10 +109,9 @@ def grab_booklist(url, output_dir, cover_path):
         cover_file: A string represent the path of the EPUB cover
     """
     soup = parse_page(url)
-    temp_volume_link = soup.select('body div.content div.container dl dd.row div.inline h2.ft-24 strong a')
-    find_lolume_link = re.compile(r'<a href="(.*)">')
-    for i in temp_volume_link:
-        volume_link = find_lolume_link.search(str(i)).group(1)
+    volume_links = soup.select('li.linovel-book-item h3 a')
+    for volume in volume_links:
+        volume_link = 'http://www.linovel.com' + volume['href']
         grab_volume(volume_link, output_dir, cover_path)
 
 
@@ -131,8 +131,8 @@ def start(urls, output_dir=None, cover_path=None):
         elif check_result == 'vollist':
             grab_booklist(url, output_dir, cover_path)
         else:
-            print('请输入正确的网址，例如：\nhttp://www.linovel.com/main/vollist/492.html'
-                  '\nhttp://www.linovel.com/main/book/1578.html')
+            print('请输入正确的网址，例如：\nhttp://www.linovel.com/n/vollist/492.html'
+                  '\nhttp://www.linovel.com/n/book/1578.html')
 
 
 def main():
