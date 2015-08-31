@@ -1,3 +1,4 @@
+import json
 import threading
 import re
 
@@ -7,7 +8,7 @@ import requests
 _HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:19.0) Gecko/20100101 Firefox/19.0'}
 
 
-class Novel():
+class Novel:
     """
     get novel information for creating epub file
 
@@ -67,43 +68,43 @@ class Novel():
         Returns:
             a list contains the book's chapter links
         """
-        temp_chapter_links = soup.select(
-            'body div.content div.container div.row-fluid div.span9 div.well div.row-fluid ul.lk-chapter-list li')
+        base_url = 'http://www.linovel.com/'
+        temp_chapter_links = soup.select('div.linovel-chapter-list a')
         find_chapter_links = re.compile(r'<a href="(.*)">')
         chapter_links = []
         for i in temp_chapter_links:
-            chapter_links.append(find_chapter_links.search(str(i)).group(1))
+            chapter_links.append(base_url + find_chapter_links.search(str(i)).group(1))
         return chapter_links
 
     def find_volume_name_number(self, soup):
-        name_and_number = str(soup.select('h1.ft-24 strong'))[1:-1].replace('</strong>', '').split('\n')
-        self.volume_name = name_and_number[1].strip()
-        self.volume_number = name_and_number[2].strip()
-        self.print_info('Volume_name:' + self.volume_name + ',Volume_number:' + self.volume_number)
+        """get the volume name and number"""
+        name_and_number = soup.select('h3')[0].string.split()
+        self.volume_name = name_and_number[1]
+        self.volume_number = name_and_number[2]
+        self.print_info('Volume_name:' + self.volume_name + '\nVolume_number:' + self.volume_number)
 
     @property
     def book_name(self):
         return self.volume_name + ' ' + self.volume_number
 
     def find_author_illustrator(self, soup):
-        temp_author_name = soup.select('table.lk-book-detail td')
-        find_author_name = re.compile(r'target="_blank">(.*)</a></td>')
-        find_illustrator_name = re.compile(r'<td>(.*)</td>')
-        self.author = find_author_name.search(str(temp_author_name[3])).group(1)
-        self.illustrator = find_illustrator_name.search(str(temp_author_name[5])).group(1)
-        self.print_info('Author:' + self.author + '\nillustrator:' + self.illustrator)
+        """get the author and illustrator"""
+        temp_author_name = soup.select('div.linovel-info p')[1]
+        find_author_name = re.compile(r'<a href="/n/search/.*?">(.*?)</a>')
+        find_illustrator_name = re.compile(r'<label>(.*?)</label>')
+        self.author = find_author_name.search(str(temp_author_name)).group(1)
+        self.illustrator = find_illustrator_name.findall(str(temp_author_name))[2]
+        self.print_info('Author:' + self.author + '\nIllustrator:' + self.illustrator)
 
     def find_introduction(self, soup):
-        temp_introduction = soup.select(
-            'html body div.content div.container div.row-fluid div.span9 div.well div.row-fluid div.span10 p')
-        find_introduction = re.compile(r'<p style="width:42em; text-indent: 2em;">(.*)</p>')
-        self.introduction = find_introduction.search(str(temp_introduction).replace('\n', '')).group(1)
+        """get the introduction"""
+        temp_introduction = soup.select('p.linovel-info-desc')[0]
+        self.introduction = temp_introduction.string
 
     def find_cover_url(self, soup):
-        temp_cover_url = soup.select(
-            'div.container div.row-fluid div.span9 div.well div.row-fluid div.span2 div.lk-book-cover a')
+        temp_cover_url = soup.select('div.linovel-cover')[1]
         find_cover_url = re.compile(r'<img src="(.*)"/>')
-        self.cover_url = 'http://lknovel.lightnovel.cn' + find_cover_url.search(str(temp_cover_url)).group(1)
+        self.cover_url = find_cover_url.search(str(temp_cover_url)).group(1)
 
     def extract_epub_info(self):
         """
@@ -124,53 +125,54 @@ class Novel():
         self.chapters_links = self.find_chapter_links(soup)
 
     @staticmethod
-    def get_new_chapter_name(soup):
+    def get_content(soup):
+        """extract var content from html source"""
+        return re.search(r'var content = ({.*?};)', str(soup).replace('\n', '')).group(1)[:-1]
+
+    @staticmethod
+    def get_new_chapter_name(content, number):
         """
-        get the formal chapter name
+        get the chapter name
 
         Args:
-            soup: A parsed page
+            content: str
 
         Returns:
             A string contain the chapter name
         """
-        chapter_name = soup.select('h3.ft-20')[0].get_text()
-        new_chapter_name = chapter_name[:chapter_name.index('章') + 1] + ' ' + chapter_name[chapter_name.index('章') + 1:]
+        chapter_name = re.search(r'subTitle:"(.*?)"', content).group(1).strip()
+        new_chapter_name = '第' + str(number + 1) + '章 ' + chapter_name
         return new_chapter_name
 
     @staticmethod
     def print_info(info):
+        """print info, ignore UnicodeDecodeError"""
         try:
             print(info)
         except UnicodeDecodeError as e:
             print('Ignored:', e)
 
     @staticmethod
-    def get_content(soup):
+    def get_chapter_content(content):
         """
-        extract contents from each page
+        extract chapter content from content
 
         Args:
-            soup: parsed page
-
-        Return:
-            A list contain paragraphs of one chapter
+            content: str
+        Returns:
+            chapters: list contains the content of each paragraph
         """
-        content = []
-        temp_chapter_content = soup.select('div.lk-view-line')
-        find_picture_url = re.compile(r'data-cover="(.*)" src="')
-        for line in temp_chapter_content:
-            if 'lk-view-img' not in str(line):
-                content.append(line.get_text().strip())
-            else:
-                picture_url = find_picture_url.search(str(line)).group(1)
-                content.append(picture_url)
-        return content
+        chapter_content = re.search(r'content:(\[.*\])', content).group(1)
+        chapter_content = json.loads(chapter_content)
+        chapters = []
+        for i in chapter_content:
+            chapters.append(i['content'])
+        return chapters
 
     def add_chapter(self, chapter):
         """
         add chapter
-        chapter structure：a tuple (chapter number,chapter name,content)
+        chapter structure：a tuple (chapter number, chapter name, chapter_content)
         """
         self.chapters.append(chapter)
 
@@ -185,17 +187,17 @@ class Novel():
         """
         try:
             soup = self.parse_page(url)
-
-            new_chapter_name = self.get_new_chapter_name(soup)
-            self.print_info(new_chapter_name)
             content = self.get_content(soup)
-            self.add_chapter((number, new_chapter_name, content))
+            new_chapter_name = self.get_new_chapter_name(content, number)
+            self.print_info(new_chapter_name)
+            chapter_content = self.get_chapter_content(content)
+            self.add_chapter((number, new_chapter_name, chapter_content))
 
         except Exception as e:
-            print('错误', str(e) + '\nat:' + url)
+            print('错误', str(e) + '\nAt:' + url)
             raise e
 
-    def get_chapter_content(self):
+    def parse_content(self):
         """
         start extract every chapter in epub
 
@@ -207,6 +209,7 @@ class Novel():
         if not self.single_thread:
             for i, link in enumerate(self.chapters_links):
                 t = threading.Thread(target=self.extract_chapter, args=(link, i))
+                t.daemon = True
                 t.start()
                 th.append(t)
             for t in th:
@@ -218,8 +221,8 @@ class Novel():
     def get_novel_information(self):
         """get novel information"""
         self.extract_epub_info()
-        self.get_chapter_content()
-        self.print_info('novel信息获取完成')
+        self.parse_content()
+        self.print_info(self.book_name + ' 信息获取完成')
 
     def novel_information(self):
         return {'chapter': self.chapters, 'volume_name': self.volume_name, 'volume_number': self.volume_number,
