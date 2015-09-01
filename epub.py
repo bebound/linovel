@@ -1,4 +1,5 @@
 import codecs
+import html
 import threading
 import os
 import re
@@ -229,7 +230,7 @@ class Epub:
             for file in sorted(file_names, key=self.sort_itemref):
                 if file not in ('Cover.html', 'Title.html', 'Contents.html'):
                     chapter_orders.append('<itemref idref="' + file + '" />')
-        final_content_opf_xml = content_opf_xml.format(book_name=self.book_name, uuid=self.uuid,
+        final_content_opf_xml = content_opf_xml.format(book_name=html.escape(self.book_name), uuid=self.uuid,
                                                        cover_name=cover_name,
                                                        author=self.author, file_paths='\n'.join(file_paths),
                                                        chapter_orders='\n'.join(chapter_orders))
@@ -244,7 +245,7 @@ class Epub:
                 '<navPoint id="' + str(i[0]) + '" playOrder="' + str(playorder) + '">\n<navLabel>\n<text>' + i[
                     1] + '</text>\n</navLabel>\n<content src="Text/' + str(i[0]) + '.html"/>\n</navPoint>')
             playorder += 1
-        final_toc_xml = toc_xml.format(uuid=self.uuid, book_name=self.book_name, author=self.author,
+        final_toc_xml = toc_xml.format(uuid=self.uuid, book_name=html.escape(self.book_name), author=self.author,
                                        nav='\n'.join(nav))
         return final_toc_xml
 
