@@ -163,6 +163,8 @@ class Epub:
                     image = '<div class="illust"><img alt="" src="../Images/' + image_url.split('/')[
                         -1] + '" /></div>\n<br/>'
                     content.append(image)
+                elif line == '<br>':
+                    content.append('<br/>')
                 else:
                     content.append('<p>' + line + '</p>')
             one_chapter_html = chapter_html.format(chapter_name=chapter_name, content='\n'.join(content))
