@@ -78,8 +78,9 @@ class Novel:
 
     def find_volume_name_number(self, soup):
         """get the volume name and number"""
+        name=soup.select('h1')[1].string.strip()
+        self.volume_name = name
         name_and_number = soup.select('h3')[0].string.split()
-        self.volume_name = name_and_number[1].strip()
         self.volume_number = name_and_number[0].strip()
         if re.search(r'^\d+$', self.volume_number):
             self.volume_number = '第' + self.volume_number + '卷'
