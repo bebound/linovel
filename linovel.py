@@ -80,7 +80,7 @@ def grab_volume(url, output_dir, cover_path):
         epub.generate_epub()
 
     except Exception as e:
-        print('错误', str(e) + '\nat:' + url)
+        print('错误', str(e) + '\nAt:' + url)
         raise e
 
 
