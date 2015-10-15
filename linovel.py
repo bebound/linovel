@@ -96,7 +96,7 @@ def parse_page(url):
     """
     r = requests.get(url, headers=_HEADERS)
     r.encoding = 'utf-8'
-    return BeautifulSoup(r.text)
+    return BeautifulSoup(r.text, 'lxml')
 
 
 def grab_booklist(url, output_dir, cover_path):

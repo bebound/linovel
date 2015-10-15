@@ -55,7 +55,7 @@ class Novel:
         """
         r = requests.get(url, headers=_HEADERS)
         r.encoding = 'utf-8'
-        return BeautifulSoup(r.text)
+        return BeautifulSoup(r.text, 'lxml')
 
     @staticmethod
     def find_chapter_links(soup):
@@ -70,7 +70,7 @@ class Novel:
         """
         base_url = 'http://www.linovel.com/'
         temp_chapter_links = soup.select('div.linovel-chapter-list a')
-        find_chapter_links = re.compile(r'<a href="(.*)">')
+        find_chapter_links = re.compile(r'<a href="/(.*)">')
         chapter_links = []
         for i in temp_chapter_links:
             chapter_links.append(base_url + find_chapter_links.search(str(i)).group(1))
@@ -78,7 +78,7 @@ class Novel:
 
     def find_volume_name_number(self, soup):
         """get the volume name and number"""
-        name=soup.select('h1')[1].string.strip()
+        name = soup.select('h1')[1].string.strip()
         self.volume_name = name
         name_and_number = soup.select('h3')[0].string.split()
         self.volume_number = name_and_number[0].strip()
@@ -130,7 +130,7 @@ class Novel:
     @staticmethod
     def get_content(soup):
         """extract var content from html source"""
-        return re.search(r'var content = ({.*?};)', str(soup).replace('\n', '')).group(1)[:-1]
+        return re.search(r'var content=({.*?};)', str(soup).replace('\n', '')).group(1)[:-1]
 
     @staticmethod
     def get_new_chapter_name(content, number):
@@ -165,8 +165,10 @@ class Novel:
         Returns:
             chapters: list contains the content of each paragraph
         """
-        chapter_content = re.search(r'content:(\[.*\])', content).group(1)
-        chapter_content = json.loads(chapter_content)
+        content = re.sub(r'(title|subTitle|series_id|chapter_id|vol_id|chapterIndexs|index|content|isSpace):', r'"\1":',
+                         content)
+        content = re.sub(r'!1', r'"!1"', content)
+        chapter_content = json.loads(content)['content']
         chapters = []
         for i in chapter_content:
             chapters.append(i['content'])
