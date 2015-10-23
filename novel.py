@@ -167,8 +167,7 @@ class Novel:
         """
         content = re.sub(r'(title|subTitle|series_id|chapter_id|vol_id|chapterIndexs|index|content|isSpace):', r'"\1":',
                          content)
-        content = re.sub(r'(!\d)', r'"\1"', content)
-        print(content)
+        content = re.sub(r'(![01])}', r'"\1"}', content)
         chapter_content = json.loads(content)['content']
         chapters = []
         for i in chapter_content:
