@@ -177,7 +177,7 @@ class Novel:
     def add_chapter(self, chapter):
         """
         add chapter
-        chapter structure：a tuple (chapter number, chapter name, chapter_content)
+        chapter structure:a tuple (chapter number, chapter name, chapter_content)
         """
         self.chapters.append(chapter)
 
