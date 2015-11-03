@@ -4,7 +4,7 @@
 Usage:
     linovel.py
     linovel.py [-s] [-o | --output=<output_dir>] [-c | --cover=<cover_path>] <url>...
-    linovel.py <url>... [-s] [-o | --output=<output_dir>] [-c | --cover=<cover_path>]
+    linovel.py <url>... [-s] [--hd] [-o | --output=<output_dir>] [-c | --cover=<cover_path>]
     linovel.py -h | --help
     linovel.py -v | --version
 
@@ -17,6 +17,7 @@ Options:
     -c=<cover_path> --cover=<cover_path>       Cover path
     -h --help                                  Show this screen
     -v --version                               Show version
+    --hd                                       HD cover
 
 Examples:
     linovel.py http://www.linovel.com/n/vollist/492.html -s
@@ -141,9 +142,9 @@ def main():
     if len(sys.argv) > 1:
         urls = arguments['<url>']
         _SINGLE_THREAD = arguments['-s']
+        hd_cover = arguments['--hd']
         output_dir = None if not arguments['--output'] else arguments['--output'][0]
         cover_path = None if not arguments['--cover'] else arguments['--cover'][0]
-        hd_cover = False if not arguments['--hd'] else True
     else:
         urls = input('Please input urls（separate with space）:').split()
         if is_single_thread():

@@ -230,7 +230,6 @@ class Novel:
                 self.extract_chapter(link, i)
 
     def get_novel_information(self):
-        print(self.hd_cover)
         """get novel information"""
         self.extract_epub_info()
         self.parse_content()

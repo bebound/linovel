@@ -110,7 +110,7 @@ class Epub:
                         with open(path, 'wb') as f:
                             f.write(temp_chunk)
                     else:
-                            print(r.status_code)
+                        print(r.status_code)
                 self.download_progress()
             except Exception as e:
                 print(e)
