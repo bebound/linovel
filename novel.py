@@ -28,10 +28,9 @@ class Novel:
 
     """
 
-    def __init__(self, url, single_thread, hd_cover=False):
+    def __init__(self, url, single_thread):
         self.url = url
         self.single_thread = single_thread
-        self.hd_cover = hd_cover
 
         self.chapters = []
         self.volume_name = ''
@@ -106,14 +105,11 @@ class Novel:
         self.introduction = temp_introduction.string
 
     def find_cover_url(self, soup):
-        if not self.hd_cover:
-            temp_cover_url = soup.select('div.linovel-cover')[1]
-            find_cover_url = re.compile(r'<img src="(.*)"/>')
-            self.cover_url = find_cover_url.search(str(temp_cover_url)).group(1)
-        else:
-            temp_cover_url = soup.select('div.linovel-cover')[0]
-            find_cover_url = temp_cover_url.find('img')
-            self.cover_url = find_cover_url['src']
+        temp_cover_url = soup.select('div.linovel-cover')[0]
+        find_cover_url = temp_cover_url.find('img')
+        cover_url = find_cover_url['src']
+        r = requests.get(cover_url)
+        self.cover_url = r.url.replace('!min250jpg', '')
 
     def extract_epub_info(self):
         """
