@@ -14,7 +14,7 @@ import requests
 _download_queue = queue.Queue()
 _PROGRESS_LOCK = threading.Lock()
 _HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:19.0) Gecko/20100101 Firefox/19.0'}
-
+_BACKUP_HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36'}
 
 class Epub:
     """
@@ -94,13 +94,17 @@ class Epub:
     def download_picture(self):
         """
         download pictures from _download_queue
+        change headers if timeout
         """
         while not _download_queue.empty():
             url = _download_queue.get()
             try:
                 path = os.path.join(os.path.join(self.base_path, 'Images'), url.split('/')[-1])
                 if not os.path.exists(path):
-                    r = requests.get(url, headers=_HEADERS, stream=True)
+                    try:
+                        r = requests.get(url, headers=_HEADERS, stream=True, timeout=10)
+                    except:
+                        r = requests.get(url, headers=_BACKUP_HEADERS, stream=True)
                     if r.status_code == requests.codes.ok:
                         temp_chunk = r.content
                         with open(path, 'wb') as f:
