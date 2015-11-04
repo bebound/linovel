@@ -94,19 +94,20 @@ class Epub:
     def download_picture(self):
         """
         download pictures from _download_queue
+        change headers if timeout
         """
         while not _download_queue.empty():
             url = _download_queue.get()
             try:
                 path = os.path.join(os.path.join(self.base_path, 'Images'), url.split('/')[-1])
                 if not os.path.exists(path):
-                    r = requests.get(url, headers=_HEADERS, stream=True)
+                    r = requests.get(url, headers=_HEADERS, stream=True, timeout=10)
                     if r.status_code == requests.codes.ok:
                         temp_chunk = r.content
                         with open(path, 'wb') as f:
                             f.write(temp_chunk)
                     else:
-                        print(r.status_code)
+                        print('Error {} when trying to get {}'.format(r.status_code, url))
                 self.download_progress()
             except Exception as e:
                 print(e)

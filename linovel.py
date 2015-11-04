@@ -38,7 +38,7 @@ _HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:19.0) Gecko/20
 
 def is_single_thread():
     single = input("Single Thread(Y/N)?:")
-    return True if single in ['Y', 'y'] else False
+    return True if single.lower() == 'y' else False
 
 
 def check_url(url):
@@ -148,7 +148,6 @@ def main():
             _SINGLE_THREAD = True
         output_dir = None
         cover_path = None
-
     if urls:
         start(urls, output_dir, cover_path)
     else:
