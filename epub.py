@@ -34,6 +34,7 @@ class Epub:
         uuid: A string represent the book uuid
         chapter: A list represent the chapter
         base_path: A string represent the epub temp path
+        date: A string represent the date the book last updated (As specified in ISO 8601)
 
     """
 
@@ -52,6 +53,7 @@ class Epub:
         self.introduction = kwargs['introduction']
         self.cover_url = kwargs['cover_url']
         self.book_name = kwargs['book_name']
+        self.date = kwargs['date']
         self.base_path = ''
         self.pictures = []
 
@@ -232,7 +234,8 @@ class Epub:
                 if file not in ('Cover.html', 'Title.html', 'Contents.html'):
                     chapter_orders.append('<itemref idref="' + file + '" />')
         final_content_opf_xml = content_opf_xml.format(book_name=html.escape(self.book_name), uuid=self.uuid,
-                                                       cover_name=cover_name,
+                                                       cover_name=cover_name, date=self.date,
+                                                       introduction=self.introduction,
                                                        author=self.author, file_paths='\n'.join(file_paths),
                                                        chapter_orders='\n'.join(chapter_orders))
         return final_content_opf_xml
