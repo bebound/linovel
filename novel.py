@@ -25,6 +25,7 @@ class Novel:
         book_name: A string represent the book name
         chapter: A list represent the chapter
         base_path: A string represent the epub temp path
+        date: A string represent the date the book last updated (As specified in ISO 8601)
 
     """
 
@@ -41,6 +42,7 @@ class Novel:
         self.cover_url = ''
         self.chapters_links = []
         self.base_path = ''
+        self.date = ''
 
     @staticmethod
     def parse_page(url):
@@ -111,6 +113,11 @@ class Novel:
         r = requests.get(cover_url)
         self.cover_url = r.url.replace('!min250jpg', '')
 
+    def find_date(self, soup):
+        raw_date = soup.find_all(string=re.compile("^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$"))
+        self.date = raw_date[0].split(' ')[0]
+
+
     def extract_epub_info(self):
         """
         extract volume's basic info
@@ -127,6 +134,7 @@ class Novel:
         self.find_author_illustrator(soup)
         self.find_introduction(soup)
         self.find_cover_url(soup)
+        self.find_date(soup)
         self.chapters_links = self.find_chapter_links(soup)
 
     @staticmethod
@@ -234,4 +242,5 @@ class Novel:
     def novel_information(self):
         return {'chapter': self.chapters, 'volume_name': self.volume_name, 'volume_number': self.volume_number,
                 'book_name': self.book_name, 'author': self.author,
-                'illustrator': self.illustrator, 'introduction': self.introduction, 'cover_url': self.cover_url}
+                'illustrator': self.illustrator, 'introduction': self.introduction,
+                'cover_url': self.cover_url, 'date': self.date}
