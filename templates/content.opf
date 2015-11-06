@@ -6,7 +6,9 @@
         <dc:creator opf:file-as="{author}" opf:role="aut">{author}</dc:creator>
         <dc:language>zh</dc:language>
         <dc:source>http://www.lightnovel.cn</dc:source>
-        <dc:description>由https://github.com/bebound/lknovel/生成</dc:description>
+        <dc:description>{introduction}</dc:description>
+        <dc:date>{date}</dc:date>
+        <dc:publisher>linovel</dc:publisher>
         <meta content="{cover_name}" name="cover" />
     </metadata>
     <manifest>

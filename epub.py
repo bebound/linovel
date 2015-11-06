@@ -7,6 +7,7 @@ import queue
 import shutil
 import uuid
 import zipfile
+from subprocess import call
 
 from bs4 import BeautifulSoup
 import requests
@@ -34,13 +35,16 @@ class Epub:
         uuid: A string represent the book uuid
         chapter: A list represent the chapter
         base_path: A string represent the epub temp path
+        date: A string represent the date the book last updated (As specified in ISO 8601)
+        out_format: A string represent the output format (Epub by default) (For other format Mac OS X only)
 
     """
 
-    def __init__(self, output_dir=None, cover_path=None, single_thread=False, **kwargs):
+    def __init__(self, output_dir=None, cover_path=None, single_thread=False, out_format='epub', **kwargs):
         self.output_dir = output_dir
         self.cover_path = cover_path
         self.single_thread = single_thread
+        self.out_format = out_format
 
         self.uuid = str(uuid.uuid1())
 
@@ -52,6 +56,7 @@ class Epub:
         self.introduction = kwargs['introduction']
         self.cover_url = kwargs['cover_url']
         self.book_name = kwargs['book_name']
+        self.date = kwargs['date']
         self.base_path = ''
         self.pictures = []
 
@@ -232,7 +237,8 @@ class Epub:
                 if file not in ('Cover.html', 'Title.html', 'Contents.html'):
                     chapter_orders.append('<itemref idref="' + file + '" />')
         final_content_opf_xml = content_opf_xml.format(book_name=html.escape(self.book_name), uuid=self.uuid,
-                                                       cover_name=cover_name,
+                                                       cover_name=cover_name, date=self.date,
+                                                       introduction=self.introduction,
                                                        author=self.author, file_paths='\n'.join(file_paths),
                                                        chapter_orders='\n'.join(chapter_orders))
         return final_content_opf_xml
@@ -295,6 +301,14 @@ class Epub:
             shutil.move(folder_name + '.epub', self.output_dir)
             print('已生成', folder_name + '.epub')
 
+    def convert(self, out_format='mobi'):
+        file_in = self.book_name + '.epub'
+        file_out = self.book_name + '.' + out_format
+        command = ['/Applications/calibre.app/Contents/MacOS/ebook-convert', file_in, file_out]
+        call(command)
+        os.remove(file_in)
+
+
     def generate_epub(self):
         """generate epub file from novel"""
         folder_name = re.sub(r'[<>:"/\\|\?\*]', '_', self.book_name)
@@ -305,7 +319,9 @@ class Epub:
         self.create_html()
 
         self.zip_files()
-        self.print_info('\n已生成：' + self.book_name + '.epub\n')
+        if self.out_format != 'epub':
+            self.convert()
+        self.print_info('\n已生成：' + self.book_name + '.' + self.out_format + '\n')
 
         # delete temp file
         shutil.rmtree(self.base_path)
