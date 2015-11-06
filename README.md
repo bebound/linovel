@@ -19,8 +19,8 @@ Generate epub from http://www.linovel.com/
 
 	Usage:
 	    linovel.py
-	    linovel.py [-s] [-o | --output=<output_dir>] [-c | --cover=<cover_path>] <url>...
-	    linovel.py <url>... [-s] [-o | --output=<output_dir>] [-c | --cover=<cover_path>]
+	    linovel.py [-s] [-o | --output=<output_dir>] [-c | --cover=<cover_path>] [--format=<out_format>] <url>...
+	    linovel.py <url>... [-s] [-o | --output=<output_dir>] [-c | --cover=<cover_path>] [--format=<out_format>]
 	    linovel.py -h | --help
 	    linovel.py -v | --version
 	
@@ -31,14 +31,42 @@ Generate epub from http://www.linovel.com/
 	    -s                                         Single thread
 	    -o=<output_dir> --output=<output_dir>      Output folder
 	    -c=<cover_path> --cover=<cover_path>       Cover path
+	    --format=<out_format>                      Output format
 	    -h --help                                  Show this screen
 	    -v --version                               Show version
 	
 	Examples:
-	    linovel.py -s http://www.linovel.com/n/vollist/492.html
-	    linovel.py -o d:/ http://www.linovel.com/n/book/1578.html
+	    linovel.py http://www.linovel.com/n/vollist/492.html -s
+	    linovel.py http://www.linovel.com/n/book/1578.html -o d:/
 
 ![lknovel截图][image-2]
+
+## Generate format other than epub
+This feature require Calibre, a ebook managing software, installed and only works on Mac OS X for now. To use it, just add `--format` argument followed with a space and the format you wish to output.
+
+For example:
+`python linovel.py http://www.linovel.com/n/vollist/2130.html --format mobi`
+
+Available output formats:
+* AZW3
+* EPUB
+* FB2
+* HTML
+* HTMLZ
+* LIT
+* LRF
+* MOBI
+* OEB
+* PDB
+* PDF
+* PML
+* RB
+* RTF
+* SNB
+* TCR
+* TXT
+* TXTZ
+
 
 The previous repo is [lknovel][6]
 
