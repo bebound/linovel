@@ -109,6 +109,7 @@ def grab_booklist(url, output_dir, cover_path, out_format):
         url: A string represent the booklist
         output_dir: A string represent the path of the output EPUB file
         cover_file: A string represent the path of the EPUB cover
+        out_format: A string represent the output format
     """
     soup = parse_page(url)
     volume_links = soup.select('li.linovel-book-item h3 a')
