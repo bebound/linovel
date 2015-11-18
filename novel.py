@@ -117,7 +117,6 @@ class Novel:
         raw_date = soup.find_all(string=re.compile("^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$"))
         self.date = raw_date[0].split(' ')[0]
 
-
     def extract_epub_info(self):
         """
         extract volume's basic info
@@ -193,11 +192,10 @@ class Novel:
 
     def extract_chapter(self, url, number):
         """
-        add each chapter's content to the Epub instance
+        add each chapter's content to the epub instance
 
         Args:
             url: A string represent the chapter url to be added
-            epub: A Epub instance
             number: A int represent the chapter's number
         """
         try:
@@ -213,12 +211,7 @@ class Novel:
             raise e
 
     def parse_content(self):
-        """
-        start extract every chapter in epub
-
-        Args:
-            epub: The Epub instance to be created
-        """
+        """start extract every chapter in epub"""
         th = []
 
         if not self.single_thread:

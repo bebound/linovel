@@ -31,13 +31,13 @@ class Epub:
         chapter_links: A string represent the chapter links
         output_dir: A string represent the epub save path
         cover_path: A string represent the cover path
+        out_format: A string represent the output format (epub by default) (For other format Mac OS X only)
         book_name: A string represent the book name
         uuid: A string represent the book uuid
         chapter: A list represent the chapter
         base_path: A string represent the epub temp path
         date: A string represent the date the book last updated (As specified in ISO 8601)
-        out_format: A string represent the output format (Epub by default) (For other format Mac OS X only)
-
+        generated_file: A string represent the generated filename
     """
 
     def __init__(self, output_dir=None, cover_path=None, single_thread=False, out_format='epub', **kwargs):
@@ -59,6 +59,7 @@ class Epub:
         self.date = kwargs['date']
         self.base_path = ''
         self.pictures = []
+        self.generated_file = ''
 
         self.finished_picture_number = 0
 
@@ -131,7 +132,7 @@ class Epub:
     @staticmethod
     def file_to_string(file_path):
         """
-        read the file as a tring
+        read the file as a string
 
         Return:
             A string
@@ -207,6 +208,7 @@ class Epub:
             th.append(t)
         for t in th:
             t.join()
+        print()
 
     def create_content_opf_xml(self):
         content_opf_xml = self.file_to_string('./templates/content.opf')
@@ -293,32 +295,37 @@ class Epub:
             z.write('./files/container.xml', 'META-INF//container.xml')
             z.write('./files/mimetype', 'mimetype')
 
-    def move_epub_file(self):
-        folder_name = os.path.basename(self.base_path)
-        if os.path.exists(os.path.join(self.output_dir, folder_name + '.epub')):
-            print('文件名已存在', 'epub保存在lknovel文件夹')
-        else:
-            shutil.move(folder_name + '.epub', self.output_dir)
-            print('已生成', folder_name + '.epub')
-
-    def convert(self, out_format='mobi'):
-        file_in = self.book_name + '.epub'
-        file_out = self.book_name + '.' + out_format
+    def convert(self):
+        """convert epub file to out_format by using calibre app"""
+        file_in = self.generated_file
+        file_out = self.generated_file.replace('.epub', '.' + self.out_format)
         command = ['/Applications/calibre.app/Contents/MacOS/ebook-convert', file_in, file_out]
         call(command)
         os.remove(file_in)
+        self.generated_file = file_out
 
+    def move_file(self):
+        if not os.path.exists(self.output_dir):
+            print('Output dir not exist!')
 
-    def generate_epub(self):
-        """generate epub file from novel"""
+        elif os.path.exists(os.path.join(self.output_dir, self.generated_file)):
+            print('{} already exist in the output folder'.format(self.generated_file))
+        else:
+            shutil.move(self.generated_file, self.output_dir)
+            print('{} has been generated successfully'.format(self.generated_file))
+
+    def generate_file(self):
+        """generate file"""
         folder_name = re.sub(r'[<>:"/\\|\?\*]', '_', self.book_name)
         self.base_path = os.path.abspath(folder_name)
+
         self.create_folders()
         self.move_or_download_cover()
-
         self.create_html()
-
         self.zip_files()
+
+        self.generated_file = folder_name + '.epub'
+
         if self.out_format != 'epub':
             self.convert()
         self.print_info('\n已生成：' + self.book_name + '.' + self.out_format + '\n')
@@ -328,4 +335,4 @@ class Epub:
 
         # move file
         if self.output_dir:
-            self.move_epub_file()
+            self.move_file()
