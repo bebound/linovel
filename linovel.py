@@ -118,7 +118,7 @@ def grab_booklist(url, output_dir, cover_path, out_format):
         grab_volume(volume_link, output_dir, cover_path, out_format)
 
 
-def start(urls, output_dir=None, cover_path=None, out_format=None):
+def start(urls, output_dir=None, cover_path=None, out_format='epub'):
     """
     start the job using url
 
@@ -152,7 +152,7 @@ def main():
             _SINGLE_THREAD = True
         output_dir = None
         cover_path = None
-        out_format = None
+        out_format = 'epub'
     if urls:
         start(urls, output_dir, cover_path, out_format)
     else:
