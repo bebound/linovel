@@ -286,7 +286,7 @@ class Epub:
     def zip_files(self):
         folder_name = os.path.basename(self.base_path)
         with zipfile.ZipFile(folder_name + '.epub', 'w', zipfile.ZIP_DEFLATED) as z:
-            z.write('./files/mimetype', 'mimetype')
+            z.write('./files/mimetype', 'mimetype', compress_type=zipfile.ZIP_STORED)
             for dir_path, dir_names, file_names in os.walk(self.base_path):
                 for file in file_names:
                     f = os.path.join(dir_path, file)
