@@ -192,7 +192,7 @@ class Epub:
         contents_html = self.file_to_string('./templates/Contents.html')
         contents = []
         for i in sorted(self.chapters, key=lambda chapter: chapter[0]):
-            contents.append('<li class="c-rules"><a href="../Text/' + str(i[0]) + '.html">' + i[1] + '</a></li>')
+            contents.append('<li class="c-rules"><a href="../Text/chapter' + str(i[0]) + '.html">' + i[1] + '</a></li>')
         final_contetns_html = contents_html.format(contents='\n'.join(contents))
         return final_contetns_html
 
@@ -229,7 +229,7 @@ class Epub:
                 postfix = file.split('.')[-1]
                 postfix = 'jpeg' if postfix == 'jpg' else postfix
                 file_paths.append(
-                    '<item href="Images/' + file + '" id="' + file + '" media-type="image/' + postfix + '" />')
+                    '<item href="Images/' + file + '" id="img' + file + '" media-type="image/' + postfix + '" />')
             break
 
         chapter_orders = []
@@ -251,17 +251,15 @@ class Epub:
         playorder = 4
         for i in sorted(self.chapters, key=lambda chapter: chapter[0]):
             nav.append(
-                '<navPoint id="' + str(i[0]) + '" playOrder="' + str(playorder) + '">\n<navLabel>\n<text>' + i[
-                    1] + '</text>\n</navLabel>\n<content src="Text/' + str(i[0]) + '.html"/>\n</navPoint>')
+                '<navPoint id="chapter' + str(i[0]) + '" playOrder="' + str(playorder) + '">\n<navLabel>\n<text>' + i[
+                    1] + '</text>\n</navLabel>\n<content src="Text/chapter' + str(i[0]) + '.html"/>\n</navPoint>')
             playorder += 1
         final_toc_xml = toc_xml.format(uuid=self.uuid, book_name=html.escape(self.book_name), author=self.author,
                                        nav='\n'.join(nav))
         return final_toc_xml
 
     def create_html(self):
-        """
-        create the html file for epub
-        """
+        """create the html file for epub"""
         html_path = os.path.join(self.base_path, 'Text')
 
         cover_html = self.create_cover_html()
@@ -269,7 +267,7 @@ class Epub:
 
         chapter_htmls = self.create_chapter_html()
         for i, chapter_html in enumerate(chapter_htmls):
-            self.write_html(chapter_html, os.path.join(html_path, str(i) + '.html'))
+            self.write_html(chapter_html, os.path.join(html_path, 'chapter' + str(i) + '.html'))
 
         title_html = self.create_title_html()
         self.write_html(title_html, os.path.join(html_path, 'Title.html'))
@@ -288,12 +286,12 @@ class Epub:
     def zip_files(self):
         folder_name = os.path.basename(self.base_path)
         with zipfile.ZipFile(folder_name + '.epub', 'w', zipfile.ZIP_DEFLATED) as z:
+            z.write('./files/mimetype', 'mimetype')
             for dir_path, dir_names, file_names in os.walk(self.base_path):
                 for file in file_names:
                     f = os.path.join(dir_path, file)
                     z.write(f, 'OEBPS//' + f[len(self.base_path) + 1:])
             z.write('./files/container.xml', 'META-INF//container.xml')
-            z.write('./files/mimetype', 'mimetype')
 
     def convert(self):
         """convert epub file to out_format by using calibre app"""
