@@ -70,7 +70,7 @@ class Novel:
         Returns:
             a list contains the book's chapter links
         """
-        base_url = 'http://www.linovel.com/'
+        base_url = 'http://old.linovel.com/'
         temp_chapter_links = soup.select('div.linovel-chapter-list a')
         find_chapter_links = re.compile(r'<a href="/(.*)">')
         chapter_links = []

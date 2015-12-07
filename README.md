@@ -1,6 +1,6 @@
 # linovel
 
-Generate epub from http://www.linovel.com/
+Generate epub from http://old.linovel.com/
 
 ![iPhone截图][image-1]
 
@@ -34,15 +34,15 @@ Generate epub from http://www.linovel.com/
 	    -v --version                               Show version
 	
 	Examples:
-	    linovel.py -s http://www.linovel.com/n/vollist/492.html
-	    linovel.py -o d:/ -f=azw3 http://www.linovel.com/n/book/1578.html
+	    linovel.py -s http://old.linovel.com/n/vollist/492.html
+	    linovel.py -o d:/ -f=azw3 http://old.linovel.com/n/book/1578.html
 ![lknovel截图][image-2]
 
 ### Generate format other than epub
 This feature require Calibre, a ebook managing software, installed and only works on Mac OS X for now. To use it, just add `-f` argument with the format you wish to output.
 
 For example:
-`python3 linovel.py -f mobi http://www.linovel.com/n/vollist/2130.html`
+`python3 linovel.py -f mobi http://old.linovel.com/n/vollist/2130.html`
 
 Available output formats:
 * AZW3
