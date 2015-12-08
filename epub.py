@@ -166,7 +166,7 @@ class Epub:
             for line in chapter[2]:
                 if line.startswith('[img]'):
                     url = re.search(r'\](.*)\[', line).group(1)
-                    image_url = 'http://www.linovel.com' + url
+                    image_url = 'http://old.linovel.com' + url
                     self.pictures.append(image_url)
                     image = '<div class="illust"><img alt="" src="../Images/' + image_url.split('/')[
                         -1] + '" /></div>\n<br/>'

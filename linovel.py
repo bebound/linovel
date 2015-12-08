@@ -20,8 +20,8 @@ Options:
     -v --version                               Show version
 
 Examples:
-    linovel.py -s http://www.linovel.com/n/vollist/492.html
-    linovel.py -o d:/ -f=azw3 http://www.linovel.com/n/book/1578.html
+    linovel.py -s http://old.linovel.com/n/vollist/492.html
+    linovel.py -o d:/ -f=azw3 http://old.linovel.com/n/book/1578.html
 """
 import re
 import sys
@@ -54,8 +54,8 @@ def check_url(url):
         return 'book' if the url represent a book
         return False if the url is neither vollist nor booklist
     """
-    vollist = re.compile(r'http://www.linovel.com/n/vollist/(\d+).html')
-    book = re.compile(r'http://www.linovel.com/n/book/(\d+).html')
+    vollist = re.compile(r'http://old.linovel.com/n/vollist/(\d+).html')
+    book = re.compile(r'http://old.linovel.com/n/book/(\d+).html')
     if vollist.search(url):
         return 'vollist'
     elif book.search(url):
@@ -114,7 +114,7 @@ def grab_booklist(url, output_dir, cover_path, out_format):
     soup = parse_page(url)
     volume_links = soup.select('li.linovel-book-item h3 a')
     for volume in volume_links:
-        volume_link = 'http://www.linovel.com' + volume['href']
+        volume_link = 'http://old.linovel.com' + volume['href']
         grab_volume(volume_link, output_dir, cover_path, out_format)
 
 
@@ -134,8 +134,8 @@ def start(urls, output_dir=None, cover_path=None, out_format='epub'):
         elif check_result == 'vollist':
             grab_booklist(url, output_dir, cover_path, out_format)
         else:
-            print('请输入正确的网址，例如：\nhttp://www.linovel.com/n/vollist/492.html'
-                  '\nhttp://www.linovel.com/n/book/1578.html')
+            print('请输入正确的网址，例如：\nhttp://old.linovel.com/n/vollist/492.html'
+                  '\nhttp://old.linovel.com/n/book/1578.html')
 
 
 def main():
