@@ -122,12 +122,9 @@ class Epub:
                 _download_queue.task_done()
 
     @staticmethod
-    def sort_itemref(file_name):
-        m = re.match('\d+', file_name)
-        if m:
-            return int(m.group(0))
-        else:
-            return -1
+    def extract_number(filename):
+        m = re.search(r'\d+', filename)
+        return int(m.group(0)) if m else -1
 
     @staticmethod
     def file_to_string(file_path):
@@ -215,8 +212,8 @@ class Epub:
         cover_name = self.cover_url.split('/')[-1]
 
         file_paths = []
-        for dir_path, dir_names, file_names in os.walk(os.path.join(self.base_path, 'Text')):
-            for file in file_names:
+        for dir_path, dir_names, filenames in os.walk(os.path.join(self.base_path, 'Text')):
+            for file in sorted(filenames, key=self.extract_number):
                 if file != 'toc.ncx':
                     file_paths.append(
                         '<item href="Text/' + file + '" id="' + file + '" media-type="application/xhtml+xml" />')
@@ -224,8 +221,8 @@ class Epub:
 
         file_paths.append('<item href="Styles/style.css" id="style.css" media-type="text/css" />')
 
-        for dir_path, dir_names, file_names in os.walk(os.path.join(self.base_path, 'Images')):
-            for file in file_names:
+        for dir_path, dir_names, filenames in os.walk(os.path.join(self.base_path, 'Images')):
+            for file in filenames:
                 postfix = file.split('.')[-1]
                 postfix = 'jpeg' if postfix == 'jpg' else postfix
                 file_paths.append(
@@ -234,8 +231,8 @@ class Epub:
 
         chapter_orders = []
 
-        for dir_path, dir_names, file_names in os.walk(os.path.join(self.base_path, 'Text')):
-            for file in sorted(file_names, key=self.sort_itemref):
+        for dir_path, dir_names, filenames in os.walk(os.path.join(self.base_path, 'Text')):
+            for file in sorted(filenames, key=self.extract_number):
                 if file not in ('Cover.html', 'Title.html', 'Contents.html'):
                     chapter_orders.append('<itemref idref="' + file + '" />')
         final_content_opf_xml = content_opf_xml.format(book_name=html.escape(self.book_name), uuid=self.uuid,
@@ -287,8 +284,8 @@ class Epub:
         folder_name = os.path.basename(self.base_path)
         with zipfile.ZipFile(folder_name + '.epub', 'w', zipfile.ZIP_DEFLATED) as z:
             z.write('./files/mimetype', 'mimetype', compress_type=zipfile.ZIP_STORED)
-            for dir_path, dir_names, file_names in os.walk(self.base_path):
-                for file in file_names:
+            for dir_path, dir_names, filenames in os.walk(self.base_path):
+                for file in filenames:
                     f = os.path.join(dir_path, file)
                     z.write(f, 'OEBPS//' + f[len(self.base_path) + 1:])
             z.write('./files/container.xml', 'META-INF//container.xml')
