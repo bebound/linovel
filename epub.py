@@ -28,7 +28,6 @@ class Epub:
         volume_illustrator: A string represent the illustrator
         volume_introduction: A string represent the introduction
         volume_cover_url: A string represent the cover_url
-        chapter_links: A string represent the chapter links
         output_dir: A string represent the epub save path
         cover_path: A string represent the cover path
         out_format: A string represent the output format (epub by default) (For other format Mac OS X only)
@@ -47,8 +46,7 @@ class Epub:
         self.out_format = out_format
 
         self.uuid = str(uuid.uuid1())
-
-        self.chapters = kwargs['chapter']
+        self.chapters = kwargs['chapters']
         self.volume_name = kwargs['volume_name']
         self.volume_number = kwargs['volume_number']
         self.author = kwargs['author']
@@ -94,8 +92,8 @@ class Epub:
             sharp_number = round(self.finished_picture_number / len(self.pictures) * 60)
             space_number = 60 - sharp_number
             print(
-                '\r' + str(self.finished_picture_number) + '/' + str(
-                    len(self.pictures)) + '[' + '#' * sharp_number + ' ' * space_number + ']', end='')
+                    '\r' + str(self.finished_picture_number) + '/' + str(
+                            len(self.pictures)) + '[' + '#' * sharp_number + ' ' * space_number + ']', end='')
 
     def download_picture(self):
         """
@@ -130,6 +128,9 @@ class Epub:
     def file_to_string(file_path):
         """
         read the file as a string
+
+        Args:
+            file_path: A string represent the file path to read
 
         Return:
             A string
@@ -216,7 +217,7 @@ class Epub:
             for file in sorted(filenames, key=self.extract_number):
                 if file != 'toc.ncx':
                     file_paths.append(
-                        '<item href="Text/' + file + '" id="' + file + '" media-type="application/xhtml+xml" />')
+                            '<item href="Text/' + file + '" id="' + file + '" media-type="application/xhtml+xml" />')
             break
 
         file_paths.append('<item href="Styles/style.css" id="style.css" media-type="text/css" />')
@@ -226,7 +227,7 @@ class Epub:
                 postfix = file.split('.')[-1]
                 postfix = 'jpeg' if postfix == 'jpg' else postfix
                 file_paths.append(
-                    '<item href="Images/' + file + '" id="img' + file + '" media-type="image/' + postfix + '" />')
+                        '<item href="Images/' + file + '" id="img' + file + '" media-type="image/' + postfix + '" />')
             break
 
         chapter_orders = []
@@ -237,7 +238,7 @@ class Epub:
                     chapter_orders.append('<itemref idref="' + file + '" />')
         final_content_opf_xml = content_opf_xml.format(book_name=html.escape(self.book_name), uuid=self.uuid,
                                                        cover_name='img' + cover_name, date=self.date,
-                                                       introduction=self.introduction,
+                                                       introduction=html.escape(self.introduction),
                                                        author=self.author, file_paths='\n'.join(file_paths),
                                                        chapter_orders='\n'.join(chapter_orders))
         return final_content_opf_xml
@@ -248,8 +249,9 @@ class Epub:
         playorder = 4
         for i in sorted(self.chapters, key=lambda chapter: chapter[0]):
             nav.append(
-                '<navPoint id="chapter' + str(i[0]) + '" playOrder="' + str(playorder) + '">\n<navLabel>\n<text>' + i[
-                    1] + '</text>\n</navLabel>\n<content src="Text/chapter' + str(i[0]) + '.html"/>\n</navPoint>')
+                    '<navPoint id="chapter' + str(i[0]) + '" playOrder="' + str(playorder) + '">\n<navLabel>\n<text>' +
+                    i[
+                        1] + '</text>\n</navLabel>\n<content src="Text/chapter' + str(i[0]) + '.html"/>\n</navPoint>')
             playorder += 1
         final_toc_xml = toc_xml.format(uuid=self.uuid, book_name=html.escape(self.book_name), author=self.author,
                                        nav='\n'.join(nav))
@@ -311,6 +313,7 @@ class Epub:
 
     def generate_file(self):
         """generate file"""
+        self.print_info('Generating {}'.format(self.book_name))
         folder_name = re.sub(r'[<>:"/\\|\?\*]', '_', self.book_name)
         self.base_path = os.path.abspath(folder_name)
 
@@ -323,7 +326,7 @@ class Epub:
 
         if self.out_format != 'epub':
             self.convert()
-        self.print_info('\n已生成：' + self.book_name + '.' + self.out_format + '\n')
+        self.print_info('\n已生成：{}.{}\n'.format(self.book_name, self.out_format))
 
         # delete temp file
         shutil.rmtree(self.base_path)
