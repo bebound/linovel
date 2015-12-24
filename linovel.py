@@ -51,7 +51,7 @@ def start(urls, output_dir=None, cover_path=None, out_format='epub'):
     for url in urls:
         for cls in [OldLinovel]:
             if cls.check_url(url):
-                novel = OldLinovel(url, _SINGLE_THREAD)
+                novel = cls(url, _SINGLE_THREAD)
                 novel.extract_novel_information()
                 books = novel.get_novel_information()
                 for book in books:
