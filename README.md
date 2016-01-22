@@ -2,6 +2,8 @@
 
 Generate epub from http://old.linovel.com/
 
+As you know, many light novel website was down on Dec 2015, so the script is not working currently. If you find any alternative, please open an issue and tell me.
+
 ![iPhone截图][image-1]
 
 ## Requirements

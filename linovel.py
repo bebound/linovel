@@ -1,5 +1,6 @@
 # !/usr/bin/env python3
-"""linovel
+"""
+linovel
 
 Usage:
     linovel.py
@@ -63,7 +64,6 @@ def start(urls, output_dir=None, cover_path=None, out_format='epub'):
 
 
 def main():
-    global _SINGLE_THREAD
     if len(sys.argv) > 1:
         urls = arguments['<url>']
         _SINGLE_THREAD = arguments['-s']
@@ -72,6 +72,7 @@ def main():
         out_format = 'epub' if not arguments['--format'] else arguments['--format'][0]
     else:
         urls = input('Please input urls（separate with space）:').split()
+        global _SINGLE_THREAD
         if is_single_thread():
             _SINGLE_THREAD = True
         output_dir = None

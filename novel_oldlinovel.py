@@ -124,7 +124,7 @@ class OldLinovel(AbstractNovel):
             soup: bs4 parsed page
 
         Return:
-
+            A string extracted from html
         """
         return re.search(r'var content=({.*?};)', str(soup).replace('\n', '')).group(1)[:-1]
 
