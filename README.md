@@ -1,4 +1,4 @@
-# linovel
+# Linovel
 
 Generate epub from http://old.linovel.com/
 
@@ -65,6 +65,11 @@ Available output formats:
 * TCR
 * TXT
 * TXTZ
+
+### Contribution
+
+Read [this](https://github.com/bebound/linovel/blob/master/CONTRIBUTION.md) if you want to let Linovel support more website
+
 
 The previous repo is [lknovel][6]
 
