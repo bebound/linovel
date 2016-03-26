@@ -48,10 +48,6 @@ class AbstractNovel:
         """check whether the url match this website"""
         pass
 
-    @property
-    def book_name(self):
-        return self.volume_name + ' ' + self.volume_number
-
     def parse_page(self, url):
         """
         parse page with BeautifulSoup

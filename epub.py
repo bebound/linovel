@@ -54,6 +54,7 @@ class Epub:
         self.introduction = kwargs['introduction']
         self.cover_url = kwargs['cover_url']
         self.book_name = kwargs['book_name']
+        self.filename = kwargs['filename']
         self.date = kwargs['date']
         self.base_path = ''
         self.pictures = []
@@ -172,8 +173,8 @@ class Epub:
                 elif line == '<br>':
                     content.append('<br/>')
                 else:
-                    content.append('<p>' + line + '</p>')
-            one_chapter_html = chapter_html.format(chapter_name=chapter_name, content='\n'.join(content))
+                    content.append('<p>' + html.escape(line) + '</p>')
+            one_chapter_html = chapter_html.format(chapter_name=html.escape(chapter_name), content='\n'.join(content))
             final_chapter_htmls.append(one_chapter_html)
         return final_chapter_htmls
 
@@ -313,8 +314,8 @@ class Epub:
 
     def generate_file(self):
         """generate file"""
-        self.print_info('Generating {}'.format(self.book_name))
-        folder_name = re.sub(r'[<>:"/\\|\?\*]', '_', self.book_name)
+        self.print_info('Generating {}'.format(self.filename))
+        folder_name = re.sub(r'[<>:"/\\|\?\*]', '_', self.filename)
         self.base_path = os.path.abspath(folder_name)
 
         self.create_folders()
@@ -326,7 +327,7 @@ class Epub:
 
         if self.out_format != 'epub':
             self.convert()
-        self.print_info('\n已生成：{}.{}\n'.format(self.book_name, self.out_format))
+        self.print_info('\n已生成：{}.{}\n'.format(self.filename, self.out_format))
 
         # delete temp file
         shutil.rmtree(self.base_path)

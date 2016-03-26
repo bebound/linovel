@@ -18,6 +18,14 @@ class OldLinovel(AbstractNovel):
         super().__init__(*args, **kwargs)
         self.chapter_links = []
 
+    @property
+    def book_name(self):
+        return self.volume_number + ' ' + self.volume_name
+
+    @property
+    def filename(self):
+        return self.volume_number + ' ' + self.volume_name
+
     @staticmethod
     def check_url(url):
         vollist = re.compile(r'http://old.linovel.com/n/vollist/(\d+).html')
@@ -229,7 +237,7 @@ class OldLinovel(AbstractNovel):
         self.parse_content()
         self.novel_information.append(
                 {'chapters': self.chapters, 'volume_name': self.volume_name, 'volume_number': self.volume_number,
-                 'book_name': self.book_name, 'author': self.author,
+                 'book_name': self.book_name, 'filename': self.filename, 'author': self.author,
                  'illustrator': self.illustrator, 'introduction': self.introduction,
                  'cover_url': self.cover_url, 'date': self.date})
         self.chapters = []
