@@ -30,6 +30,7 @@ from docopt import docopt
 
 from epub import Epub
 from novel_oldlinovel import OldLinovel
+from novel_360dxs import Dxs
 
 _SINGLE_THREAD = False
 
@@ -50,7 +51,7 @@ def start(urls, output_dir=None, cover_path=None, out_format='epub'):
         out_format: A string represent the output file format
     """
     for url in urls:
-        for cls in [OldLinovel]:
+        for cls in [OldLinovel, Dxs]:
             if cls.check_url(url):
                 novel = cls(url, _SINGLE_THREAD)
                 novel.extract_novel_information()
@@ -64,6 +65,7 @@ def start(urls, output_dir=None, cover_path=None, out_format='epub'):
 
 
 def main():
+    global _SINGLE_THREAD
     if len(sys.argv) > 1:
         urls = arguments['<url>']
         _SINGLE_THREAD = arguments['-s']
@@ -72,7 +74,6 @@ def main():
         out_format = 'epub' if not arguments['--format'] else arguments['--format'][0]
     else:
         urls = input('Please input urls（separate with space）:').split()
-        global _SINGLE_THREAD
         if is_single_thread():
             _SINGLE_THREAD = True
         output_dir = None

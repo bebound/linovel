@@ -1,8 +1,12 @@
 # Linovel
 
-Generate epub from http://old.linovel.com/
+Generate epub from various website
 
-As you know, many light novel website was down on Dec 2015, so the script is not working currently. If you find any alternative, please open an issue and tell me.
+Supported website:
+
+- [360℃小说](http://www.360dxs.com)
+
+ If you find any other website, please open an issue and tell me.
 
 ![iPhone截图][image-1]
 
@@ -36,15 +40,15 @@ As you know, many light novel website was down on Dec 2015, so the script is not
 	    -v --version                               Show version
 	
 	Examples:
-	    linovel.py -s http://old.linovel.com/n/vollist/492.html
-	    linovel.py -o d:/ -f=azw3 http://old.linovel.com/n/book/1578.html
+	    linovel.py -s http://qitawenku.360dxs.com/book_3037.html
+	    linovel.py -o d:/ -f=azw3 http://qitawenku.360dxs.com/book_3037.html
 ![lknovel截图][image-2]
 
 ### Generate format other than epub
 This feature require Calibre, a ebook managing software, installed and only works on Mac OS X for now. To use it, just add `-f` argument with the format you wish to output.
 
 For example:
-`python3 linovel.py -f mobi http://old.linovel.com/n/vollist/2130.html`
+`python3 linovel.py -f mobi http://qitawenku.360dxs.com/book_3037.html`
 
 Available output formats:
 * AZW3
