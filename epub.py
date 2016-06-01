@@ -1,16 +1,16 @@
 import codecs
 import html
-import threading
 import os
-import re
 import queue
+import re
 import shutil
+import threading
 import uuid
 import zipfile
 from subprocess import call
 
-from bs4 import BeautifulSoup
 import requests
+from bs4 import BeautifulSoup
 
 _download_queue = queue.Queue()
 _PROGRESS_LOCK = threading.Lock()
@@ -93,8 +93,8 @@ class Epub:
             sharp_number = round(self.finished_picture_number / len(self.pictures) * 60)
             space_number = 60 - sharp_number
             print(
-                    '\r' + str(self.finished_picture_number) + '/' + str(
-                            len(self.pictures)) + '[' + '#' * sharp_number + ' ' * space_number + ']', end='')
+                '\r' + str(self.finished_picture_number) + '/' + str(
+                    len(self.pictures)) + '[' + '#' * sharp_number + ' ' * space_number + ']', end='')
 
     def download_picture(self):
         """
@@ -164,8 +164,7 @@ class Epub:
 
             for line in chapter[2]:
                 if line.startswith('[img]'):
-                    url = re.search(r'\](.*)\[', line).group(1)
-                    image_url = 'http://old.linovel.com' + url
+                    image_url = re.search(r'\](.*)\[', line).group(1)
                     self.pictures.append(image_url)
                     image = '<div class="illust"><img alt="" src="../Images/' + image_url.split('/')[
                         -1] + '" /></div>\n<br/>'
@@ -218,7 +217,7 @@ class Epub:
             for file in sorted(filenames, key=self.extract_number):
                 if file != 'toc.ncx':
                     file_paths.append(
-                            '<item href="Text/' + file + '" id="' + file + '" media-type="application/xhtml+xml" />')
+                        '<item href="Text/' + file + '" id="' + file + '" media-type="application/xhtml+xml" />')
             break
 
         file_paths.append('<item href="Styles/style.css" id="style.css" media-type="text/css" />')
@@ -228,7 +227,7 @@ class Epub:
                 postfix = file.split('.')[-1]
                 postfix = 'jpeg' if postfix == 'jpg' else postfix
                 file_paths.append(
-                        '<item href="Images/' + file + '" id="img' + file + '" media-type="image/' + postfix + '" />')
+                    '<item href="Images/' + file + '" id="img' + file + '" media-type="image/' + postfix + '" />')
             break
 
         chapter_orders = []
@@ -250,9 +249,8 @@ class Epub:
         playorder = 4
         for i in sorted(self.chapters, key=lambda chapter: chapter[0]):
             nav.append(
-                    '<navPoint id="chapter' + str(i[0]) + '" playOrder="' + str(playorder) + '">\n<navLabel>\n<text>' +
-                    i[
-                        1] + '</text>\n</navLabel>\n<content src="Text/chapter' + str(i[0]) + '.html"/>\n</navPoint>')
+                '<navPoint id="chapter' + str(i[0]) + '" playOrder="' + str(playorder) + '">\n<navLabel>\n<text>' +
+                i[1] + '</text>\n</navLabel>\n<content src="Text/chapter' + str(i[0]) + '.html"/>\n</navPoint>')
             playorder += 1
         final_toc_xml = toc_xml.format(uuid=self.uuid, book_name=html.escape(self.book_name), author=self.author,
                                        nav='\n'.join(nav))

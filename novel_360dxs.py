@@ -18,7 +18,7 @@ class Dxs(AbstractNovel):
 
     @property
     def filename(self):
-        return self.volume_number + ' ' + self.volume_name
+        return ' '.join([self.volume_number, self.volume_name])
 
     @staticmethod
     def check_url(url):
