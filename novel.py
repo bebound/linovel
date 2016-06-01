@@ -48,18 +48,19 @@ class AbstractNovel:
         """check whether the url match this website"""
         pass
 
-    def parse_page(self, url):
+    def parse_page(self, url, encoding=''):
         """
         parse page with BeautifulSoup
 
         Args:
             url: A string represent the url to be parsed
+            encoding: A string represent the encoding of the html
 
         Return:
             A BeatifulSoup element
         """
         r = requests.get(url, headers=self._HEADERS)
-        r.encoding = 'utf-8'
+        r.encoding = 'utf-8' if not encoding else encoding
         return BeautifulSoup(r.text, 'lxml')
 
     @abstractmethod
