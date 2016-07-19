@@ -5,7 +5,7 @@ Generate epub from various website
 Supported website:
 
 - [360℃小说](http://www.360dxs.com)
-- [轻小说文库](http://www.wenku8.com)
+- [轻小说文库](http://zhannei.baidu.com/cse/search?q=&s=135999764005104892&srt=dateModified&nsid=0&area=1)
 
  If you find any other website, please open an issue and tell me.
 
