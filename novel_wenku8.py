@@ -194,6 +194,7 @@ class Wenku(AbstractNovel):
         """extract novel information"""
         self.parse_vollist()
         self.print_info('Extract {} completed'.format(self.book_name))
+        print(self.novel_information[0])
 
     def get_novel_information(self):
         return self.novel_information

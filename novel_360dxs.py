@@ -1,6 +1,6 @@
 import html
-import threading
 import re
+import threading
 
 from novel import AbstractNovel
 
@@ -51,8 +51,8 @@ class Dxs(AbstractNovel):
     @staticmethod
     def get_chapter_content(src):
         content = re.findall(
-                r'http://cpro.baidustatic.com/cpro/ui/c.js" type="text/javascript"></script>([\s\S]*?)<script type="text/javascript">',
-                src)[1].strip()
+            r'http://cpro.baidustatic.com/cpro/ui/c.js" type="text/javascript"></script>([\s\S]*?)<script type="text/javascript">',
+            src)[1].strip()
         content = re.sub(r'<a class.*?</a>', '', content)
         content = re.sub(r'<script.*?</script>', '', content)
         return [html.unescape(i).strip() for i in content.split('\n')]
@@ -120,10 +120,10 @@ class Dxs(AbstractNovel):
         self.extract_volume_url(str(tag))
         self.parse_content()
         self.novel_information.append(
-                {'chapters': self.chapters, 'volume_name': self.volume_name, 'volume_number': self.volume_number,
-                 'book_name': self.book_name, 'filename': self.filename, 'author': self.author,
-                 'illustrator': self.illustrator, 'introduction': self.introduction,
-                 'cover_url': self.cover_url, 'date': self.date})
+            {'chapters': self.chapters, 'volume_name': self.volume_name, 'volume_number': self.volume_number,
+             'book_name': self.book_name, 'filename': self.filename, 'author': self.author,
+             'illustrator': self.illustrator, 'introduction': self.introduction,
+             'cover_url': self.cover_url, 'date': self.date})
         self.chapters = []
         self.chapter_links = []
 
