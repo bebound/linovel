@@ -19,7 +19,7 @@ class TestWenku:
         assert self.novel.novel_information[0]['author'] == '榎宫佑'
 
     def test_chapters(self):
-        assert len(self.novel.novel_information[0]['chapters']) == 7
+        assert len(self.novel.novel_information[0]['chapters']) == 8
 
     def test_volume_number(self):
         assert self.novel.novel_information[0]['volume_number'] == '第一卷'
