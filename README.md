@@ -1,7 +1,7 @@
 # Linovel
 
 [![Build Status][image-1]][1]
-
+![Python Version][image-2]
 Generate EPUB from various website
 
 Supported website:
@@ -11,7 +11,7 @@ Supported website:
 
  If you find any other website, please open an issue and tell me.
 
-![iPhone截图][image-2]
+![iPhone截图][image-3]
 
 ## Requirements
 
@@ -45,7 +45,7 @@ Supported website:
 	Examples:
 	    linovel.py -s http://qitawenku.360dxs.com/book_3037.html
 	    linovel.py -o d:/ -f=azw3 http://qitawenku.360dxs.com/book_3037.html
-![lknovel截图][image-3]
+![lknovel截图][image-4]
 
 ### Generate format other than epub
 This feature require Calibre, a ebook managing software, installed and only works on Mac OS X for now. To use it, just add `-f` argument with the format you wish to output.
@@ -92,5 +92,6 @@ The previous repo is [lknovel][10]
 [10]:	https://github.com/bebound/lknovel
 
 [image-1]:	https://travis-ci.org/bebound/linovel.svg?branch=master
-[image-2]:	https://raw.github.com/bebound/linovel/master/screenShot/total.png
-[image-3]:	https://raw.github.com/bebound/linovel/master/screenShot/2.png
+[image-2]:	https://img.shields.io/badge/python-3.4%203.5-blue.svg
+[image-3]:	https://raw.github.com/bebound/linovel/master/screenShot/total.png
+[image-4]:	https://raw.github.com/bebound/linovel/master/screenShot/2.png
