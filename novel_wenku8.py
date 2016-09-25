@@ -45,6 +45,8 @@ class Wenku(AbstractNovel):
             print(info)
         except UnicodeDecodeError as e:
             print('Ignored:', e)
+        except UnicodeEncodeError as e:
+            print('Ignored:', e)
 
     @staticmethod
     def get_chapter_content(soup):
@@ -127,7 +129,7 @@ class Wenku(AbstractNovel):
         self.chapter_links = []
 
     def get_book_name(self, soup):
-        return re.search(r'<meta content="([\w\s]+?)小说', str(soup)).group(1)
+        return re.search(r'《(.*)》小说打包', str(soup)).group(1)
 
     def get_author_name(self, soup):
         return re.search(r'<meta content=".*是([\w\s]+?)所写的轻小说', str(soup)).group(1)
@@ -168,22 +170,24 @@ class Wenku(AbstractNovel):
                 newtd.extend(t)
             else:
                 newtd.append(t)
-        volumes = []
-        chapters = []
-        volume_chapter = []
+        volume_titles = []
+        chapter_urls = []
+        single_volume_urls = []
         for i in newtd:
             if i['class'] == ['vcss']:
-                if volume_chapter:
-                    chapters.append(volume_chapter)
-                    volume_chapter = []
-                volumes.append(i.text.strip())
+                if single_volume_urls:
+                    chapter_urls.append(single_volume_urls)
+                    single_volume_urls = []
+                volume_titles.append(i.text.strip())
             elif str(i) != '<td class="ccss"> </td>':
                 chapter_url = re.search(r'href="(\d+\.htm)"', str(i)).group(1)
                 page_url = url.replace('index.htm', chapter_url)
-                volume_chapter.append(page_url)
+                single_volume_urls.append(page_url)
+        if single_volume_urls:
+            chapter_urls.append(single_volume_urls)
 
-        for i, j in zip(volumes, chapters):
-            self.parse_book(i, j)
+        for title, urls in zip(volume_titles, chapter_urls):
+            self.parse_book(title, urls)
 
     def parse_vollist(self):
         soup = self.parse_page(self.url, 'gbk')
@@ -194,7 +198,6 @@ class Wenku(AbstractNovel):
         """extract novel information"""
         self.parse_vollist()
         self.print_info('Extract {} completed'.format(self.book_name))
-        print(self.novel_information[0])
 
     def get_novel_information(self):
         return self.novel_information
