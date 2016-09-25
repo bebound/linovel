@@ -47,6 +47,8 @@ class Dxs(AbstractNovel):
             print(info)
         except UnicodeDecodeError as e:
             print('Ignored:', e)
+        except UnicodeEncodeError as e:
+            print('Ignored:', e)
 
     @staticmethod
     def get_chapter_content(src):

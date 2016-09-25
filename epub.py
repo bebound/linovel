@@ -86,6 +86,8 @@ class Epub:
             print(info)
         except UnicodeDecodeError as e:
             print('Ignored:', e)
+        except UnicodeEncodeError as e:
+            print('Ignored:', e)
 
     def download_progress(self):
         with _PROGRESS_LOCK:
