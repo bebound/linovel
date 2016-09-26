@@ -28,4 +28,4 @@ class TestDxs:
         assert self.novel.novel_information[0]['volume_name'] == '听说游戏玩家兄妹要征服幻想世界'
 
     def test_filename(self):
-        assert self.novel.novel_information[0]['filename'] == '第一卷 听说游戏玩家兄妹要征服幻想世界'
+        assert self.novel.novel_information[0]['filename'] == 'No game No life游戏人生 第一卷 听说游戏玩家兄妹要征服幻想世界'
