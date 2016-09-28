@@ -55,8 +55,8 @@ class Wenku(AbstractNovel):
         is_img = False
         if 'divimage' in str(i):
             is_img = True
-            for i in re.findall(r'src="(http.*?jpg)', str(i)):
-                lines.append('[img]' + i + '[\img]')
+            for i in re.findall(r'src="(http.*?(jpg|png))', str(i)):
+                lines.append('[img]' + i[0] + '[\img]')
         else:
             for j in i.text.split('\n'):
                 if j.strip():
