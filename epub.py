@@ -238,10 +238,13 @@ class Epub:
             for file in sorted(filenames, key=self.extract_number):
                 if file not in ('Cover.html', 'Title.html', 'Contents.html'):
                     chapter_orders.append('<itemref idref="' + file + '" />')
-        final_content_opf_xml = content_opf_xml.format(book_name=html.escape(self.book_name), uuid=self.uuid,
+        final_content_opf_xml = content_opf_xml.format(book_name=html.escape(self.book_name),
+                                                       volume_number=self.volume_number,
+                                                       uuid=self.uuid,
                                                        cover_name='img' + cover_name, date=self.date,
                                                        introduction=html.escape(self.introduction),
-                                                       author=self.author, file_paths='\n'.join(file_paths),
+                                                       author=self.author,
+                                                       file_paths='\n'.join(file_paths),
                                                        chapter_orders='\n'.join(chapter_orders))
         return final_content_opf_xml
 
