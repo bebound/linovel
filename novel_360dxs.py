@@ -110,7 +110,7 @@ class Dxs(AbstractNovel):
             self.volume_number, self.volume_name = title.split()
             self.print_info('{} {}'.format(self.volume_number, self.volume_name))
         else:
-            self.volume_name = title
+            self.volume_number = title
             self.print_info(self.volume_name)
 
     def extract_volume_url(self, src):
