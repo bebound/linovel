@@ -125,7 +125,7 @@ class Dxs(AbstractNovel):
             {'chapters': self.chapters, 'volume_name': self.volume_name, 'volume_number': self.volume_number,
              'book_name': self.book_name, 'filename': self.filename, 'author': self.author,
              'illustrator': self.illustrator, 'introduction': self.introduction,
-             'cover_url': self.cover_url, 'date': self.date})
+             'cover_url': self.cover_url, 'date': self.date, 'source': self.url})
         self.chapters = []
         self.chapter_links = []
 

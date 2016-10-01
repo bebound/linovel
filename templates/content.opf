@@ -5,7 +5,7 @@
         <dc:title>{book_name} {volume_number}</dc:title>
         <dc:creator opf:file-as="{author}" opf:role="aut">{author}</dc:creator>
         <dc:language>zh</dc:language>
-        <dc:source>http://www.lightnovel.cn</dc:source>
+        <dc:source>{source}</dc:source>
         <dc:description>{introduction}</dc:description>
         <dc:date>{date}</dc:date>
         <dc:publisher>linovel</dc:publisher>

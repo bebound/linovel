@@ -46,16 +46,7 @@ class Epub:
         self.out_format = out_format
 
         self.uuid = str(uuid.uuid1())
-        self.chapters = kwargs['chapters']
-        self.volume_name = kwargs['volume_name']
-        self.volume_number = kwargs['volume_number']
-        self.author = kwargs['author']
-        self.illustrator = kwargs['illustrator']
-        self.introduction = kwargs['introduction']
-        self.cover_url = kwargs['cover_url']
-        self.book_name = kwargs['book_name']
-        self.filename = kwargs['filename']
-        self.date = kwargs['date']
+        self.__dict__.update(kwargs)
         self.base_path = ''
         self.pictures = []
         self.generated_file = ''
@@ -241,7 +232,9 @@ class Epub:
         final_content_opf_xml = content_opf_xml.format(book_name=html.escape(self.book_name),
                                                        volume_number=self.volume_number,
                                                        uuid=self.uuid,
-                                                       cover_name='img' + cover_name, date=self.date,
+                                                       cover_name='img' + cover_name,
+                                                       source=self.source,
+                                                       date=self.date,
                                                        introduction=html.escape(self.introduction),
                                                        author=self.author,
                                                        file_paths='\n'.join(file_paths),

@@ -75,6 +75,6 @@ class AbstractNovel:
 
         Return:
             A list contains dict, dict usually has these information: volume_name, volume_number, book_name,
-            author, illustrator, introduction, chapters, cover_url, date
+            author, illustrator, introduction, chapters, cover_url, date, source
         """
         pass
