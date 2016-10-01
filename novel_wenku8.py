@@ -109,13 +109,14 @@ class Wenku(AbstractNovel):
                 self.extract_chapter(volume_title, url, i)
 
     def extract_volume_name(self, title):
-        if '卷 ' in title:
-            self.volume_number, self.volume_name = title.split('卷 ')
-            self.volume_number += '卷'
+        if '卷' in title:
+            index = title.find('卷')
+            self.volume_number, self.volume_name = title[:index+1], title[index+2:]
             self.print_info('{} {}'.format(self.volume_number, self.volume_name))
         else:
-            self.volume_number = ''
-            self.volume_name = title
+            self.volume_number = title
+            self.volume_name = ''
+            self.print_info(self.volume_number)
 
     def parse_book(self, volume_title, urls):
         self.extract_volume_name(volume_title)

@@ -106,12 +106,14 @@ class Dxs(AbstractNovel):
 
     def extract_volume_name(self, src):
         title = re.search(r'<h3 class="am-text-center">(.*?)</h3>', str(src)).group(1).strip()
-        if len(title.split()) == 2:
-            self.volume_number, self.volume_name = title.split()
+        if '卷' in title:
+            index = title.find('卷')
+            self.volume_number, self.volume_name = title[:index + 1], title[index + 2:]
             self.print_info('{} {}'.format(self.volume_number, self.volume_name))
         else:
             self.volume_number = title
-            self.print_info(self.volume_name)
+            self.volume_name = ''
+            self.print_info(self.volume_number)
 
     def extract_volume_url(self, src):
         links = re.findall(r'<a class="am-text-truncate" href="(.*?)">.*?</a>', str(src))
