@@ -106,7 +106,7 @@ class Dxs(AbstractNovel):
 
     def extract_volume_name(self, src):
         title = re.search(r'<h3 class="am-text-center">(.*?)</h3>', str(src)).group(1).strip()
-        if title.split() > 2:
+        if len(title.split()) >= 2:
             index = title.find('卷')
             self.volume_number, self.volume_name = title[:index + 1], title[index + 2:]
         else:
