@@ -94,6 +94,7 @@ class Epub:
         download pictures from _download_queue
         change headers if timeout
         """
+        error_counter = {}
         while not _download_queue.empty():
             url = _download_queue.get()
             try:
@@ -109,7 +110,13 @@ class Epub:
                 self.download_progress()
             except Exception as e:
                 print(e)
-                _download_queue.put(url)
+                error_count = error_counter.get(url, 0)
+                if error_count < 5:
+                    error_counter[url] = error_count + 1
+                    _download_queue.put(url)
+                else:
+                    print('Too many error, cancel.')
+                    self.download_progress()
             finally:
                 _download_queue.task_done()
 
