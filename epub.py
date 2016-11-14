@@ -15,6 +15,7 @@ from bs4 import BeautifulSoup
 _download_queue = queue.Queue()
 _PROGRESS_LOCK = threading.Lock()
 _HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:19.0) Gecko/20100101 Firefox/19.0'}
+_error_counter = {}
 
 
 class Epub:
@@ -94,7 +95,6 @@ class Epub:
         download pictures from _download_queue
         change headers if timeout
         """
-        error_counter = {}
         while not _download_queue.empty():
             url = _download_queue.get()
             try:
@@ -110,9 +110,9 @@ class Epub:
                 self.download_progress()
             except Exception as e:
                 print(e)
-                error_count = error_counter.get(url, 0)
+                error_count = _error_counter.get(url, 0)
                 if error_count < 5:
-                    error_counter[url] = error_count + 1
+                    _error_counter[url] = error_count + 1
                     _download_queue.put(url)
                 else:
                     print('Too many error, cancel.')
