@@ -1,10 +1,10 @@
-from abc import ABCMeta, abstractmethod, abstractstaticmethod
+from abc import ABC, abstractmethod, abstractstaticmethod
 
-from bs4 import BeautifulSoup
 import requests
+from bs4 import BeautifulSoup
 
 
-class AbstractNovel:
+class AbstractNovel(ABC):
     """
     abstract novel class
 
@@ -22,8 +22,6 @@ class AbstractNovel:
         date: A string represent the date the book last updated (As specified in ISO 8601)
         novel_information: A list contains dict which represent the novel information
     """
-
-    __metaclass__ = ABCMeta
 
     _HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:19.0) Gecko/20100101 Firefox/19.0'}
 
