@@ -22,7 +22,7 @@ class Dxs(AbstractNovel):
 
     @staticmethod
     def check_url(url):
-        url_checker = re.compile(r'http://qitawenku.360dxs.com/book_(\d+).html')
+        url_checker = re.compile(r'http://(\S+).360dxs.com/book_(\d+).html')
         return True if url_checker.search(url) else False
 
     @staticmethod
