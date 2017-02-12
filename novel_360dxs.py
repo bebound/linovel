@@ -54,7 +54,7 @@ class Dxs(AbstractNovel):
     def get_chapter_content(src):
         content = re.findall(
             r'http://cpro.baidustatic.com/cpro/ui/c.js" type="text/javascript"></script>([\s\S]*?)<script type="text/javascript">',
-            src)[1].strip()
+            src)[0].strip()
         content = re.sub(r'<a class.*?</a>', '', content)
         content = re.sub(r'<script.*?</script>', '', content)
         return [html.unescape(i).strip() for i in content.split('\n')]
