@@ -52,16 +52,15 @@ class Wenku(AbstractNovel):
     def get_chapter_content(soup):
         i = soup.select('div#content')[0]
         lines = []
-        is_img = False
-        if 'divimage' in str(i):
-            is_img = True
-            for i in re.findall(r'src="(http.*?(jpg|png))', str(i)):
-                lines.append('[img]' + i[0] + '[\img]')
-        else:
-            for j in i.text.split('\n'):
-                if j.strip():
-                    lines.append(j.strip())
-        return lines if is_img else lines[1:-1]
+        for j in i.text.split('\n'):
+            if j.strip():
+                lines.append(j.strip())
+        hasCredit = 'wenku8.com' in lines[-1]
+        if hasCredit:
+            lines = lines[1:-1]
+        for i in re.findall(r'src="(http.*?(jpg|png))', str(i)):
+            lines.append('[img]' + i[0] + '[\img]')
+        return lines
 
     def add_chapter(self, chapter):
         """
