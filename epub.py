@@ -8,6 +8,7 @@ import threading
 import uuid
 import zipfile
 from subprocess import call
+from sys import platform, exit
 
 import requests
 from bs4 import BeautifulSoup
@@ -300,8 +301,7 @@ class Epub:
         """convert epub file to out_format by using calibre app"""
         file_in = self.generated_file
         file_out = self.generated_file.replace('.epub', '.' + self.out_format)
-        
-        from sys import platform, exit
+
         if platform == "linux" or platform == "linux2":
             # linux
             command = ['/usr/bin/ebook-convert', file_in, file_out]
