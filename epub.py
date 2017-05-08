@@ -8,6 +8,7 @@ import threading
 import uuid
 import zipfile
 from subprocess import call
+from sys import platform, exit
 
 import requests
 from bs4 import BeautifulSoup
@@ -300,8 +301,21 @@ class Epub:
         """convert epub file to out_format by using calibre app"""
         file_in = self.generated_file
         file_out = self.generated_file.replace('.epub', '.' + self.out_format)
-        command = ['/Applications/calibre.app/Contents/MacOS/ebook-convert', file_in, file_out]
-        call(command)
+
+        if platform == "linux" or platform == "linux2":
+            # linux
+            command = ['/usr/bin/ebook-convert', file_in, file_out]
+            call(command)
+
+        elif platform == "darwin":
+            # OS X
+            command = ['/Applications/calibre.app/Contents/MacOS/ebook-convert', file_in, file_out]
+            call(command)
+        elif platform == "win32":
+            # Windows...
+            print('Format conversion is not supported on Windows (yet).')
+            exit()
+
         os.remove(file_in)
         self.generated_file = file_out
 
