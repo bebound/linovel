@@ -32,6 +32,10 @@ from epub import Epub
 from novel_oldlinovel import OldLinovel
 from novel_360dxs import Dxs
 from novel_wenku8 import Wenku
+from novel_8wenku import WenkuNoBQ
+from novel_iqing import IQing
+from novel_sfacg import SFAcg
+from novel_bakana import BakaNa
 
 _SINGLE_THREAD = False
 
@@ -46,13 +50,13 @@ def start(urls, output_dir=None, cover_path=None, out_format='epub'):
     start the job using url
 
     Args:
-        urls: A string represent the urls which was input by user 11
+        urls: A string represent the urls which was input by user
         output_dir: A string represent the path of the output EPUB file
         cover_path: A string represent the path of the EPUB cover
         out_format: A string represent the output file format
     """
     for url in urls:
-        for cls in [OldLinovel, Dxs, Wenku]:
+        for cls in [OldLinovel, Dxs, Wenku,WenkuNoBQ,IQing,SFAcg,BakaNa]:
             if cls.check_url(url):
                 novel = cls(url, _SINGLE_THREAD)
                 novel.extract_novel_information()
