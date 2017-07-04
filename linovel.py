@@ -46,7 +46,7 @@ def start(urls, output_dir=None, cover_path=None, out_format='epub'):
     start the job using url
 
     Args:
-        urls: A string represent the urls which was input by user
+        urls: A string represent the urls which was input by user 11
         output_dir: A string represent the path of the output EPUB file
         cover_path: A string represent the path of the EPUB cover
         out_format: A string represent the output file format
