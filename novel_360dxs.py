@@ -141,9 +141,12 @@ class Dxs(AbstractNovel):
         soup = self.parse_page(self.url)
         volumes = soup.select('div.am-panel-bd.book-info')
         self.extract_common_information(soup)
-        for volume in volumes[1:-2]:
-            self.parse_book(volume)
-
+        if volumes[1:-2]:
+            for volume in volumes[1:-2]:
+                self.parse_book(volume))
+        else:
+            for volume in volumes[1:-1]:
+                self.parse_book(volume)
     def extract_novel_information(self):
         """extract novel information"""
         self.parse_vollist()
