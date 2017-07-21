@@ -143,10 +143,9 @@ class Dxs(AbstractNovel):
         self.extract_common_information(soup)
         if volumes[1:-2]:
             for volume in volumes[1:-2]:
-                print(volume)
+                self.parse_book(volume))
         else:
             for volume in volumes[1:-1]:
-                print(volume)
                 self.parse_book(volume)
     def extract_novel_information(self):
         """extract novel information"""
