@@ -141,7 +141,6 @@ class Dxs(AbstractNovel):
         soup = self.parse_page(self.url)
         volumes = soup.select('div.am-panel-bd.book-info')
         self.extract_common_information(soup)
-        print(volumes[1:-2])
         if volumes[1:-2]:
             for volume in volumes[1:-2]:
                 print(volume)
