@@ -66,7 +66,6 @@ class Dxs(AbstractNovel):
             url=re.findall(r'<meta content="([a-zA-z]+://[a-z|A-Z|0-9|\.]*).*?" property="og:url"',src)
             for i in re.findall(r'data-original="([^\s]*[jpg|png])"', str(content)):
                 lines.append('[img]' +url[0]+ i + '[\img]')
-                print (i)
             lines.pop(-1)            
         return lines
 
