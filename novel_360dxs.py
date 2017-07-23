@@ -64,7 +64,7 @@ class Dxs(AbstractNovel):
         hasCredit = 'chapterimg' in lines[-1]
         if hasCredit :
             url=re.findall(r'<meta content="([a-zA-z]+://[a-z|A-Z|0-9|\.]*).*?" property="og:url"',src)
-            for i in re.findall(r'data-original="([^\s]*[jpg|png])"', str(content)):
+            for i in re.findall(r'data-original="([^\s]*[jpg|png])"', str(lines[-1])):
                 lines.append('[img]' +url[0]+ i + '[\img]')
             lines.pop(-1)            
         return lines
