@@ -143,7 +143,7 @@ class Dxs(AbstractNovel):
         self.extract_common_information(soup)
         if volumes[1:-2]:
             for volume in volumes[1:-2]:
-                self.parse_book(volume))
+                self.parse_book(volume)
         else:
             for volume in volumes[1:-1]:
                 self.parse_book(volume)
