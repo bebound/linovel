@@ -55,9 +55,19 @@ class Dxs(AbstractNovel):
         content = re.findall(
             r'http://cpro.baidustatic.com/cpro/ui/c.js" type="text/javascript"></script>([\s\S]*?)<script type="text/javascript">',
             src)[0].strip()
+        
+        lines = []
         content = re.sub(r'<a class.*?</a>', '', content)
         content = re.sub(r'<script.*?</script>', '', content)
-        return [html.unescape(i).strip() for i in content.split('\n')]
+        for j in content.split('\n'):
+            lines.append(html.unescape(j).strip())
+        hasCredit = 'chapterimg' in lines[-1]
+        if hasCredit :
+            lines.pop(-1)
+            url=re.findall(r'<meta content="([a-zA-z]+://[a-z|A-Z|0-9|\.]*).*?" property="og:url"',src)
+            for i in re.findall(r'data-original="([^\s]*[jpg|png])"', str(content)):
+                lines.append('[img]' +url[0]+ i + '[\img]')
+        return lines
 
     def add_chapter(self, chapter):
         """
@@ -103,7 +113,6 @@ class Dxs(AbstractNovel):
         else:
             for i, link in enumerate(self.chapter_links):
                 self.extract_chapter(link, i)
-
     def extract_volume_name(self, src):
         title = re.search(r'<h3 class="am-text-center">(.*?)</h3>', str(src)).group(1).strip()
         if len(title.split()) >= 2:
@@ -135,6 +144,8 @@ class Dxs(AbstractNovel):
         self.author = soup.find('a', {'itemprop': 'author'}).text
         self.introduction = soup.find('div', {'itemprop': 'description'}).text
         self.cover_url = self.find_cover_url(soup)
+        print(self.cover_url)
+
         self.find_date(soup)
 
     def parse_vollist(self):
