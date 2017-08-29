@@ -59,7 +59,7 @@ class AbstractNovel(ABC):
         """
         r = requests.get(url, headers=self._HEADERS)
         r.encoding = 'utf-8' if not encoding else encoding
-        return BeautifulSoup(r.text, 'lxml')
+        return BeautifulSoup(r.text, 'html5lib')
 
     @abstractmethod
     def extract_novel_information(self):
