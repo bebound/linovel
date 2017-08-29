@@ -149,7 +149,7 @@ class Epub:
     @staticmethod
     def write_html(html, file_path):
         with codecs.open(file_path, 'w', 'utf-8') as f:
-            f.write(BeautifulSoup(html, 'lxml').prettify())
+            f.write(BeautifulSoup(html, 'html5lib').prettify())
 
     @staticmethod
     def write_xml(xml, file_path):
