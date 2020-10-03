@@ -89,3 +89,4 @@ def main():
 if __name__ == '__main__':
     arguments = docopt(__doc__, version='linovel 2.0')
     sys.exit(main())
+print("thanks for using")
