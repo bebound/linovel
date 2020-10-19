@@ -6,8 +6,8 @@ from novel import AbstractNovel
 
 class Wenku(AbstractNovel):
     """
-    wenku8.com class, deal with url such as:
-    http://www.wenku8.com/book/1269.htm
+    wenku8.net class, deal with url such as:
+    https://www.wenku8.net/book/1269.htm
     """
 
     def __init__(self, *args, **kwargs):
@@ -21,7 +21,7 @@ class Wenku(AbstractNovel):
 
     @staticmethod
     def check_url(url):
-        url_checker = re.compile(r'http://www.wenku8.com/book/(\d+).htm')
+        url_checker = re.compile(r'https://www.wenku8.net/book/(\d+).htm')
         return True if url_checker.search(url) else False
 
     @staticmethod
@@ -55,10 +55,10 @@ class Wenku(AbstractNovel):
         for j in i.text.split('\n'):
             if j.strip():
                 lines.append(j.strip())
-        hasCredit = 'wenku8.com' in lines[-1]
+        hasCredit = 'wenku8.net' in lines[-1]
         if hasCredit:
             lines = lines[1:-1]
-        for i in re.findall(r'src="(http.*?(jpg|png))', str(i)):
+        for i in re.findall(r'src="(https.*?(jpg|png))', str(i)):
             lines.append('[img]' + i[0] + '[\img]')
         return lines
 
@@ -155,7 +155,7 @@ class Wenku(AbstractNovel):
         self.find_date(soup)
 
     def get_volumes_url(self, soup):
-        url = re.search(r'<a href="(http://www.wenku8.com/novel/.*?index.htm)">小说目录</a>', str(soup)).group(1)
+        url = re.search(r'<a href="(https://www.wenku8.net/novel/.*?index.htm)">小说目录</a>', str(soup)).group(1)
         return url
 
     def extract_volumes(self, soup):
