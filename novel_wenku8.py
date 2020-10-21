@@ -58,8 +58,9 @@ class Wenku(AbstractNovel):
         hasCredit = 'wenku8.net' in lines[-1]
         if hasCredit:
             lines = lines[1:-1]
-        for i in re.findall(r'src="(https.*?(jpg|png))', str(i)):
-            lines.append('[img]' + i[0] + '[\img]')
+        imgs = soup.select('div.divimage img.imagecontent')
+        for img in imgs:
+            lines.append('[img]' + img['src'] + '[\img]')
         return lines
 
     def add_chapter(self, chapter):
