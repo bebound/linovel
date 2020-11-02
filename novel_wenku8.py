@@ -129,7 +129,8 @@ class Wenku(AbstractNovel):
         self.chapter_links = []
 
     def get_book_name(self, soup):
-        return re.search(r'《(.*)》小说TXT', str(soup)).group(1)
+        return soup.select("span b")[0].get_text()
+
 
     def get_author_name(self, soup):
         return re.search(r'<meta content=".*是([\w\s]+?)所写的轻小说', str(soup)).group(1)
