@@ -83,7 +83,7 @@ The previous repo is [lknovel][10]
 
 [1]:	https://travis-ci.org/bebound/linovel
 [2]:	http://www.360dxs.com
-[3]:	http://zhannei.baidu.com/cse/search?q=&s=135999764005104892&srt=dateModified&nsid=0&area=1
+[3]:	https://www.wenku8.net
 [4]:	http://www.python.org/getit/
 [5]:	http://docs.python-requests.org/en/latest/
 [6]:	http://www.crummy.com/software/BeautifulSoup/
