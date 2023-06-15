@@ -319,17 +319,20 @@ class Epub:
         os.remove(file_in)
         self.generated_file = file_out
 
-    def move_file(self):
+    def move_file(self) -> str:
         if not os.path.exists(self.output_dir):
             print('Output dir not exist!')
+            return ""
 
         elif os.path.exists(os.path.join(self.output_dir, self.generated_file)):
             print('{} already exist in the output folder'.format(self.generated_file))
+            return ""
         else:
             shutil.move(self.generated_file, self.output_dir)
             print('{} has been generated successfully'.format(self.generated_file))
+            return os.path.join(self.output_dir, self.generated_file)
 
-    def generate_file(self):
+    def generate_file(self) -> str:
         """generate file"""
         self.print_info('Generating {}'.format(self.filename))
         folder_name = re.sub(r'[<>:"/\\|\?\*]', '_', self.filename)
@@ -351,4 +354,6 @@ class Epub:
 
         # move file
         if self.output_dir:
-            self.move_file()
+            return self.move_file()
+        else:
+            return self.generated_file
